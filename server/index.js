@@ -18,15 +18,21 @@ const server = new ApolloServer({ typeDefs, resolvers,
   context: ({ req, connection }) => {
 
     const token = req.headers.token || '';
-
-    const { user } = jwt.verify(token, SECRET)
-    return { 
+    if (token){
+      const { user } = jwt.verify(token, SECRET)
+      return { 
+        models,
+        user,
+        SECRET,
+        SECRET2,
+      };
+    }
+    return {
       models,
-      user,
       SECRET,
       SECRET2,
-
-    };
+    }
+    
   }
 });
 
