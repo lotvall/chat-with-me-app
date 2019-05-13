@@ -13,10 +13,10 @@ export default (sequelize, DataTypes) => {
   
     Message.associate = (models) => {
       // 1:M
-      Message.belongsTo(models.Channel, {
+      Message.belongsTo(models.Group, {
         foreignKey: {
-          name: 'channelId',
-          field: 'channel_id',
+          name: 'groupId',
+          field: 'groupd_id',
         },
       });
       Message.belongsTo(models.User, {

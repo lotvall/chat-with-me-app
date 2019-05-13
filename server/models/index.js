@@ -11,7 +11,7 @@ const sequelize = new Sequelize('slack', 'postgres', 'postgres', {
 
 const models = {
     User: sequelize['import']('./user'),
-    Channel: sequelize['import']('./channel'),
+    Group: sequelize['import']('./group'),
     Message: sequelize['import']('./message'),
     Member: sequelize['import']('./member'),
 };
