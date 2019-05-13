@@ -18,8 +18,10 @@ export default {
     User: {
         groups: (parent, args, { models, user }) =>{
             // problem med admin har
+            console.log('problem med admin field tag1', user)
+
             return models.sequelize.query(
-                'select * from groups as group join members as member on group.id = member.group_id where member.user_id = ?',
+                'SELECT * FROM GROUPS JOIN members AS MEMBER ON groups.id = member.group_id WHERE member.user_id = ?',
                 {
                 replacements: [user.id],
                 model: models.Group,
