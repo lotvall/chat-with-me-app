@@ -3,7 +3,8 @@ export default `
         id: Int!
         name: String!
         messages: [Message!]!
-        members: [User!]
+        members: [User!]!
+        admin: Boolean!
     }
 
     type GroupResponse {
@@ -11,8 +12,12 @@ export default `
         group: Group
         error: [Error!]
     }
+    type Query {
+        getGroupMembers(groupId: Int!): [User!]!
+    }
     type Mutation {
         createGroup (name: String!) : GroupResponse!
+        joinGroup(groupId: Int!): GroupResponse!
     }
 
 `;
