@@ -60,13 +60,13 @@ export const refreshTokens = async (token, refreshToken, models, SECRET, SECRET2
   };
 };
 
-export const tryLogin = async (email, password, models, SECRET, SECRET2)  => {
-  const user = await models.User.findOne({ where: { email }, raw: true });
+export const tryLogin = async (username, password, models, SECRET, SECRET2)  => {
+  const user = await models.User.findOne({ where: { username }, raw: true });
   if (!user) {
-    // user with provided email not found
+    // user with provided username not found
    return {
         ok: false,
-        errors: [{path: "email", message: "Invalid email"}]
+        errors: [{path: "username", message: "Invalid username"}]
    }
   }
 

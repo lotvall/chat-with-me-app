@@ -1,9 +1,12 @@
 import { ApolloServer }  from 'apollo-server'
 import path from 'path';
+import dotenv from 'dotenv'
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import models from './models/index'
 
+dotenv.config()
 
+console.log(process.env.dbUsername)
 const types = fileLoader(path.join(__dirname, './schema'));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')))
 const typeDefs = mergeTypes(types, { all: true });
@@ -13,8 +16,8 @@ const server = new ApolloServer({ typeDefs, resolvers,
     return { 
       models,
       user: connection ? connection.context.user : req.user,
-      // SECRET,
-      // SECRET2,
+      SECRET: process.env.SECRET1,
+      SECRET2: process.env.SECRET2,
 
     };
   }

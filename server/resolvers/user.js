@@ -36,8 +36,8 @@ export default {
         allUsers: (parent, args, { models }) => models.User.findAll(),
     },
     Mutation: {
-        login: (parent, {email, password}, { models, SECRET, SECRET2 }) => 
-            tryLogin(email, password, models, SECRET, SECRET2),
+        login: (parent, {username, password}, { models, SECRET, SECRET2 }) => 
+            tryLogin(username, password, models, SECRET, SECRET2),
 
         registerUser: async (parent, args, { models }) => {
 
