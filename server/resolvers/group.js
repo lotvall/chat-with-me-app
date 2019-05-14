@@ -11,6 +11,17 @@ export default {
                 return user
             })
             return users
+        },
+        messages: async ({id}, args, { models }) => {
+
+            // not working at the moment
+            // createGroup and joinGroup is not returning messages
+            // "message": "column message.group_id does not exist",
+            console. log('this is being called')
+
+            const messages = await models.Message.findAll({where: {group_id: id }})
+            console. log('the messages', messages)
+            return messages
         }
     },
     Query: {
@@ -26,16 +37,13 @@ export default {
     Mutation: {
         createGroup: requiresAuth.createResolver(async (parent, args, { models, user }) => {
             try {
-                const response = await models.sequelize.transaction(async (transaction) => {
-                    const group = await models.Group.create({ ...args });
-                    await models.Member.create({ groupId: group.id, userId: user.id, admin: true, });
-
-                    return group;
-                });
+                const group = await models.Group.create({ ...args });
+                await models.Member.create({ groupId: group.id, userId: user.id, admin: true, });
+                
 
                 return {
                     ok: true,
-                    team: response,
+                    group: group,
                 };
             } catch (err) {
                 console.log(err);
@@ -54,7 +62,7 @@ export default {
                 const group = await models.Group.findOne({where: { id: groupId }})
                 return {
                     ok: true,
-                    group
+                    group: group
                 } 
                 
             } catch(error) {

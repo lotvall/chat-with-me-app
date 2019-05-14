@@ -16,7 +16,7 @@ export default (sequelize, DataTypes) => {
       Message.belongsTo(models.Group, {
         foreignKey: {
           name: 'groupId',
-          field: 'groupd_id',
+          field: 'group_id',
         },
       });
       Message.belongsTo(models.User, {
