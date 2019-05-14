@@ -4,15 +4,12 @@ import { requiresAuth, requiresTeamAccess } from '../helpers/permission'
 export default {
     Group: {
         members: async ({id}, args, { models }) => {
-            console.log('finding members of the group')
             const members = await models.Member.findAll({where: { group_id: id}}).map(el => el.get({ plain: true }))
             
             const users = members.map(async m => {
-                console.log('m', m)
                 const user = await models.User.findOne({where: { id: m.userId}})
                 return user
             })
-            console.log(users)
             return users
         }
     },
@@ -54,9 +51,10 @@ export default {
             try {
                 
                 await models.Member.create({ userId: user.id, groupId})
-                
+                const group = await models.Group.findOne({where: { id: groupId }})
                 return {
-                    ok: true
+                    ok: true,
+                    group
                 } 
                 
             } catch(error) {
