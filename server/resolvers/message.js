@@ -1,7 +1,9 @@
-import { requiresTeamAccess, requiresAuth } from '../helpers/permission'
-import { withFilter } from 'apollo-server'
+import { requiresAuth } from '../helpers/permission'
+import { PubSub, withFilter } from 'apollo-server'
 
-const NEW_GROUP_MESSAGE = "NEW_CHANNEL_MESSAGE"
+const NEW_GROUP_MESSAGE = "NEW_GROUP_MESSAGE"
+
+const pubsub = new PubSub()
 
 export default {
     
@@ -12,6 +14,17 @@ export default {
         user: ({ user, userId }, args, { models }) => {
             if(user) return user
             return models.User.findOne({where: { id: userId }})
+        }
+    },
+    Subscription: {
+        newGroupMessage: {
+          subscribe: withFilter(
+            () => pubsub.asyncIterator(NEW_GROUP_MESSAGE),
+            (payload, args, { user }) => {
+
+                return payload.groupId === args.groupId ;
+            }
+          )
         }
     },
 
@@ -44,7 +57,7 @@ export default {
                 }
             }
 
-            console.log('cursor', messages)
+            console.log('cursor', messages.length)
             return {
                 cursor: '' + messages[messages.length-1].createdAt,
                 messages: messages.map(message => {
@@ -73,11 +86,6 @@ export default {
                 ...messageData,
                 userId: user.id,
             });
-
-            
-
-            // actually save the message here
-
 
                 return true;
             } catch (err) {

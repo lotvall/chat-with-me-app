@@ -15,20 +15,36 @@ const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers'))
 const typeDefs = mergeTypes(types, { all: true });
 
 const server = new ApolloServer({ typeDefs, resolvers,
+  subscriptions: {
+    onConnect: async (connectionParams, webSocket) => {
+      const { token, refreshToken } = connectionParams
+      if (token && refreshToken) {
+        try { 
+          const { user } = jwt.verify(token, SECRET)
+          return { models, user }
+        } catch (err) {
+          const { user } = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
+          return { models, user } 
+        }
+      }
+      
+    } 
+  },
   context: ({ req, connection }) => {
 
-    const token = req.headers.token || '';
-    if (token){
-      const { user } = jwt.verify(token, SECRET)
-      return { 
-        models,
-        user,
-        SECRET,
-        SECRET2,
-      };
-    }
+    // const token = req.headers.token || '';
+    // if (token){
+    //   const { user } = jwt.verify(token, SECRET)
+    //   return { 
+    //     models,
+    //     user,
+    //     SECRET,
+    //     SECRET2,
+    //   };
+    // }
     return {
       models,
+      user: connection ? connection.context.user : req.user,
       SECRET,
       SECRET2,
     }
