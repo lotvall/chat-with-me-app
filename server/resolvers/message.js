@@ -7,7 +7,7 @@ export default {
     
     Message: {
         url: parent => {
-            return parent.url ? `http://localhost:4000/uploads/${parent.url}` : parent.url
+            return parent.url ? `http://localhost:8080/uploads/${parent.url}` : parent.url
         },
         user: ({ user, userId }, args, { models }) => {
             if(user) return user
@@ -16,10 +16,10 @@ export default {
     },
 
     Query: {
-        messages: requiresAuth.createResolver(async (parent, { cursor, channelId }, {models, user}) => {
-            const group = await models.Group.findOne({raw: true, where: {id: groupId}})
+        messages: requiresAuth.createResolver(async (parent, { cursor, groupId }, {models, user}) => {
+            // const group = await models.Group.findOne({raw: true, where: {id: groupId}})
 
-            const member = await models.member.findOne({raw: true, where: { channelId, userId: user.id }})
+            const member = await models.Member.findOne({raw: true, where: { groupId, userId: user.id }})
             if(!member) {
                 throw new Error ('Not Authorized')
             }
@@ -43,12 +43,14 @@ export default {
                     messages: []
                 }
             }
+
+            console.log('cursor', messages)
             return {
-                cursor: '' + messages[messages.length-1].created_at,
+                cursor: '' + messages[messages.length-1].createdAt,
                 messages: messages.map(message => {
                     return {
                         ...message.dataValues,
-                        created_at: '' + message.dataValues.created_at,
+                        created_at: '' + message.dataValues.createdAt,
                     }
                 })
             }

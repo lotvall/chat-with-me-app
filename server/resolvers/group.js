@@ -13,14 +13,7 @@ export default {
             return users
         },
         messages: async ({id}, args, { models }) => {
-
-            // not working at the moment
-            // createGroup and joinGroup is not returning messages
-            // "message": "column message.group_id does not exist",
-            console. log('this is being called')
-
             const messages = await models.Message.findAll({where: {group_id: id }})
-            console. log('the messages', messages)
             return messages
         }
     },
