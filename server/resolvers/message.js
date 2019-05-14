@@ -87,6 +87,9 @@ export default {
                 userId: user.id,
             });
 
+            //pubsub.publish(NEW_GROUP_MESSAGE, { newGroupMessage: message, groupId: message.groupId });
+
+
                 return true;
             } catch (err) {
                 console.log(err);

@@ -18,30 +18,49 @@ const server = new ApolloServer({ typeDefs, resolvers,
   subscriptions: {
     onConnect: async (connectionParams, webSocket) => {
       const { token, refreshToken } = connectionParams
+      console.log('is token here?', token, refreshToken)
+
       if (token && refreshToken) {
         try { 
           const { user } = jwt.verify(token, SECRET)
+          console.log('try,', user)
           return { models, user }
         } catch (err) {
+          console.log('catch block')
+
           const { user } = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
+          console.log('catch the user', user)
+
           return { models, user } 
         }
       }
       
     } 
   },
-  context: ({ req, connection }) => {
+  context: async ({ req, connection }) => {
 
-    // const token = req.headers.token || '';
-    // if (token){
-    //   const { user } = jwt.verify(token, SECRET)
-    //   return { 
-    //     models,
-    //     user,
-    //     SECRET,
-    //     SECRET2,
-    //   };
-    // }
+    connection ? 
+      console.log('is the user here connection', connection.context.user) : 
+      console.log('is the user here req', req.user)
+
+      if (!connection && !req.user) {
+        const { token, refreshtoken } = req.headers
+
+        if (token && refreshtoken) {
+          try { 
+
+            const { user } = await jwt.verify(token, SECRET)
+            return { models, user, SECRET, SECRET2, }
+          } catch (err) {
+  
+            const { user } = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
+  
+            return { models, user, SECRET, SECRET2, }
+          }
+        }
+
+      }
+
     return {
       models,
       user: connection ? connection.context.user : req.user,
