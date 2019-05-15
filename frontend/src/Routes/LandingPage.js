@@ -24,8 +24,14 @@ class App extends Component {
             <Header inverted as="h1">
               Chat with me.
             </Header>
-            <Button size="huge">Register</Button>
-            <Button size="huge">Login</Button>
+            <Button onClick={()=> {
+              this.props.history.push('/register')
+              
+            }} size="large">Register</Button>
+            <Button onClick={()=> {
+              this.props.history.push('/login')
+              
+            }} size="large">Login</Button>
           </Container>
           <Segment inverted vertical as="footer">
             An application by Alexander Lötvall

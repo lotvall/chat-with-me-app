@@ -8,7 +8,7 @@ import {
 
 import decode from 'jwt-decode'
 import LandingPage from './LandingPage'
-
+import Login from './Login'
 
 const isAuthenticated = () => {
     const token = localStorage.getItem('token')
@@ -50,6 +50,7 @@ export default () => {
         <BrowserRouter>
             <Switch>
                 <Route path='/' exact component={LandingPage}/>
+                <Route path='/login' exact component={Login}/>
             </Switch>
         </BrowserRouter>
     )

@@ -8,7 +8,7 @@ import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 import ApolloClient from "apollo-boost";
 import { createUploadLink } from 'apollo-upload-client'
-import {WebSocketLink} from 'apollo-link-ws';
+import { WebSocketLink } from 'apollo-link-ws';
 
 
 const httpLink = createUploadLink({
