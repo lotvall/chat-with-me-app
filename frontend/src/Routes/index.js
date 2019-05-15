@@ -10,7 +10,7 @@ import decode from 'jwt-decode'
 import LandingPage from './LandingPage'
 import Login from './Login'
 import Register from './Register'
-import AppLayout from '../components/AppLayout'
+import App from './App'
 
 
 const isAuthenticated = () => {
@@ -55,7 +55,7 @@ export default () => {
                 <Route path='/' exact component={LandingPage}/>
                 <Route path='/login' exact component={Login}/>
                 <Route path='/register' exact component={Register}/>
-                <Route path='/layout' exact component={AppLayout}/>
+                <Route path='/app' exact component={App}/>
             </Switch>
         </BrowserRouter>
     )
