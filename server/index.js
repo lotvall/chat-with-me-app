@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import models from './models/index'
 import jwt from 'jsonwebtoken'
+import { refreshTokens } from './helpers/auth'
 
 dotenv.config()
 
@@ -29,10 +30,14 @@ const server = new ApolloServer({ typeDefs, resolvers,
           console.log('catch block')
 
           const { user } = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
-          console.log('catch the user', user)
+          if (!user) {
+            throw new Error ('Not authenticated')
+          }
 
           return { models, user } 
         }
+      } else {
+        throw new Error ('Not authenticated')
       }
       
     } 

@@ -19,13 +19,11 @@ export default {
     Subscription: {
         newGroupMessage: {
           subscribe: withFilter(
-            () => pubsub.asyncIterator(NEW_GROUP_MESSAGE),
-            (payload, args, { user }) => {
-
-                return payload.groupId === args.groupId ;
+                () => pubsub.asyncIterator(NEW_GROUP_MESSAGE),
+                (payload, args, { user }) => {
+                    return payload.groupId === args.groupId;
+                })
             }
-          )
-        }
     },
 
     Query: {
@@ -57,7 +55,6 @@ export default {
                 }
             }
 
-            console.log('cursor', messages.length)
             return {
                 cursor: '' + messages[messages.length-1].createdAt,
                 messages: messages.map(message => {
