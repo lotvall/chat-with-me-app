@@ -5,18 +5,43 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from "react-apollo";
 import 'semantic-ui-css/semantic.min.css'
 // import client from './apollo'
+import { split } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
+
+
 
 import ApolloClient from "apollo-boost";
 import { createUploadLink } from 'apollo-upload-client'
+import {WebSocketLink} from 'apollo-link-ws';
 
 
 const httpLink = createUploadLink({
   uri: 'http://localhost:8080/graphql',
 });
 
+
+const wsLink = new WebSocketLink({
+  uri: `ws://localhost:8080/graphql`,
+  options: {
+    reconnect: true,
+  },
+});
+
+const link = split(
+  // split based on operation type
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
+    return kind === 'OperationDefinition' && operation === 'subscription';
+  },
+  wsLink,
+  httpLink,
+);
+
 const client = new ApolloClient({
-  link: httpLink,
+  link,
 })
+
+
 
 const App = (
     <ApolloProvider client={client}>
