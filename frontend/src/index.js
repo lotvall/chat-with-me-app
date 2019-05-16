@@ -6,9 +6,10 @@ import { ApolloProvider } from "react-apollo";
 import 'semantic-ui-css/semantic.min.css'
 import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
-import ApolloClient from "apollo-boost";
+import ApolloClient from "apollo-client";
 import { createUploadLink } from 'apollo-upload-client'
 import { WebSocketLink } from 'apollo-link-ws';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 
 const httpLink = createUploadLink({
@@ -35,6 +36,7 @@ const link = split(
 
 const client = new ApolloClient({
   link,
+  cache: new InMemoryCache()
 })
 
 
