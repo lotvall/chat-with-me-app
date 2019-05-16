@@ -8,11 +8,13 @@ const GroupWrapper = styled.div`
   grid-row: 1 / 4;
   background-color: #1757a6;
   color: #b5d6ff;
+  padding-top: 10px;
 `;
 
 const TeamNameHeader = styled.h1`
   color: #fff;
   font-size: 20px;
+  margin-top: 10px;
 `;
 
 const SideBarList = styled.ul`

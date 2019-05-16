@@ -5,6 +5,7 @@ import { Header } from 'semantic-ui-react'
 const Root = styled.div`
     grid-column: 3;
     grid-row: 1;
+    margin-top: 10px;
 `
 
 export default ({ groupName }) => (
