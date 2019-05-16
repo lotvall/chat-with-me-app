@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-
-import "semantic-ui-css/semantic.min.css";
+import React, { useState } from "react";
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
+import logo from '../static/images/logo.png'
 
 import {
   Button,
@@ -13,44 +14,109 @@ import {
 
 import "./Login.css";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Grid textAlign="center" verticalAlign="middle">
-          <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              <img src="/static/images/logo.png" alt="logo" className="image" />{" "}
-              Log-in to your account
-            </Header>
-            <Form size="large">
-              <Segment stacked>
-                <Form.Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="E-mail address"
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  type="password"
-                />
-                <Button color="teal" fluid size="large">
-                  Login
-                </Button>
-              </Segment>
-            </Form>
-            <Message>
-              New to us? <a href="#root">Sign Up</a>
-            </Message>
-          </Grid.Column>
-        </Grid>
-      </div>
-    );
+const LOGIN_MUTATION = gql`
+    mutation($username: String!, $password:String!){
+        login(username:$username, password:$password){
+            ok
+            token
+            refreshToken
+            errors {
+                message
+                path
+            }
+        }
+    }
+`
+
+const Login = ({history}) => {
+
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [errors, setErrors] = useState({})
+
+  const onSubmit = async (login) => {
+    const response = await login({ variables: { username, password } })
+
+    const { ok, token, refreshToken, errors } = response.data.login
+
+    if (ok) {
+      localStorage.setItem('token', token)
+      localStorage.setItem('refreshToken', refreshToken)
+      history.push('/app')
+
+    } else {
+      const err = {}
+      errors.forEach(({ path, message }) => {
+        err[`${path}Error`] = message
+      })
+      setErrors(err)
+    }
   }
+
+  const { usernameError, passwordError } = errors
+
+  let errorList = [];
+
+  if (usernameError) {
+    errorList = [...errorList, usernameError]
+  }
+  if (passwordError) {
+    errorList = [...errorList, passwordError]
+  }
+
+  return (
+    <Mutation mutation={LOGIN_MUTATION}>
+      {(login, { data }) => (
+        <div className="App">
+          <Grid textAlign="center" verticalAlign="middle">
+            <Grid.Column style={{ maxWidth: 450 }}>
+              <Header as="h2" color="blue" textAlign="center">
+                <img src={logo} className="image" />
+                Log-in to your account
+            </Header>
+              <Form size="large">
+                <Segment stacked>
+                  <Form.Input
+                    fluid
+                    icon="user"
+                    iconPosition="left"
+                    placeholder="E-mail address"
+                    onChange={e => setUsername(e.target.value)}
+                    value={username}
+                  />
+                  <Form.Input
+                    fluid
+                    icon="lock"
+                    iconPosition="left"
+                    placeholder="Password"
+                    type="password"
+                    onChange={e => setPassword(e.target.value)}
+                    value={password}
+                  />
+                  <Button onClick={() => onSubmit(login)} color="blue" fluid size="large">
+                    Login
+                </Button>
+                </Segment>
+              </Form>
+              <Message>
+                New to Chat With Me? <a href="#root">Sign Up</a>
+              </Message>
+
+              {
+                (usernameError || passwordError) &&
+                <Message
+                  error
+                  header='There was some errors with your submission'
+                  list={errorList}
+                />
+              }
+            </Grid.Column>
+          </Grid>
+        </div>
+      )}
+
+    </Mutation>
+  );
 }
 
-export default App;
+export default Login;
