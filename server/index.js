@@ -47,14 +47,17 @@ const server = new ApolloServer({ typeDefs, resolvers,
     connection ? 
       console.log('is the user here connection', connection.context.user) : 
       console.log('is the user here req', req.user)
+      console.log(req.headers.token)
 
       if (!connection && !req.user) {
         const { token, refreshtoken } = req.headers
+      
 
         if (token && refreshtoken) {
           try { 
 
             const { user } = await jwt.verify(token, SECRET)
+            console.log('user', user)
             return { models, user, SECRET, SECRET2, }
           } catch (err) {
   

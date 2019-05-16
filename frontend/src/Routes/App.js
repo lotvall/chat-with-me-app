@@ -6,35 +6,35 @@ import Groups from '../components/Groups'
 // import MessageContainer from '../containers/MessageContainer'
 import { Query } from 'react-apollo'
 
-import { ALL_USERS_QUERY } from '../graphql/user'
+import { USER_QUERY } from '../graphql/user'
 
 const App = () => {
   return (
-    <Query query={ALL_USERS_QUERY}>{
+    <Query query={USER_QUERY}>{
 
-  ({loading, error, data}) => {
-                        if (loading || !data) {
-                            return null
-                        }
-                        if (error) {
-                            console.log(error)
-                        }
+      ({ loading, error, data }) => {
+        if (loading || !data) {
+          return null
+        }
+        if (error) {
+          console.log(error)
+        }
 
-                        if (data) {
-                            console.log(data)
-                        }
+        if (data) {
+          console.log(data)
+        }
 
-      return (
+        return (
 
-      <AppLayout>
-        {/* <Sidebar/> */}
-        <Groups />
-        <Header />
-        {/* <MessageContainer/> */}
-      </AppLayout>
+          <AppLayout>
+            {/* <Sidebar/> */}
+            <Groups />
+            <Header />
+            {/* <MessageContainer/> */}
+          </AppLayout>
 
-      )
-  }
+        )
+      }
 
     }</Query>)
 

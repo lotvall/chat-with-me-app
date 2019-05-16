@@ -10,11 +10,21 @@ import ApolloClient from "apollo-client";
 import { createUploadLink } from 'apollo-upload-client'
 import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { setContext } from 'apollo-link-context';
 
 
 const httpLink = createUploadLink({
   uri: 'http://localhost:8080/graphql',
 });
+
+const addTokenMiddleware = setContext(() => ({
+  headers: {
+    'token': localStorage.getItem('token'),
+    'refreshToken': localStorage.getItem('refreshToken'),
+  },
+}));
+
+const linkWithTokens = addTokenMiddleware.concat(httpLink)
 
 
 const wsLink = new WebSocketLink({
@@ -31,7 +41,7 @@ const link = split(
     return kind === 'OperationDefinition' && operation === 'subscription';
   },
   wsLink,
-  httpLink,
+  linkWithTokens,
 );
 
 const client = new ApolloClient({
