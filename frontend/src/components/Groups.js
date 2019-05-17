@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react'
+import {Link} from 'react-router-dom'
 
 const GroupWrapper = styled.div`
   display: grid;
@@ -23,7 +24,7 @@ const SideBarList = styled.ul`
   padding-left: 0px;
 `;
 
-const paddingLeft = 'padding-left: 30px';
+const paddingLeft = 'padding-left: 2px';
 
 const SideBarListItem = styled.li`
   padding: 2px;
@@ -33,29 +34,28 @@ const SideBarListItem = styled.li`
   }
 `;
 
-const SideBarListHeader = styled.li`${paddingLeft};`;
+const SideBarListHeader = styled.li`padding: 2px;  margin-bottom: 1em`;
 
-const PushLeft = styled.div`${paddingLeft};`;
+const PushLeft = styled.div`padding-left: 30px;`;
 
 const Green = styled.span`color: #38978d;`;
 
 const Bubble = ({ on = true }) => (on ? <Green>●</Green> : '○');
 
-export default () => (
+const group = ({ id, name }) => <Link style={{color: '#b5d6ff'}} to={`/app/${id}`} key={`group-${id}`}><SideBarListItem><PushLeft># {name}</PushLeft></SideBarListItem></Link>
+
+export default ({groups, username}) => (
   <GroupWrapper>
-    <PushLeft>
-      <TeamNameHeader>Username</TeamNameHeader>
-      
-    </PushLeft>
     <div>
+      <TeamNameHeader><PushLeft>{username}</PushLeft></TeamNameHeader>
       <SideBarList>
-        <SideBarListHeader>Groups <Icon onClick={console.log('clicked Groups')} name="add circle"/></SideBarListHeader> 
+        <SideBarListHeader><PushLeft>Groups <Icon onClick={console.log('clicked Groups')} name="add circle"/></PushLeft></SideBarListHeader> 
+        {groups.map(g => group(g))}
       </SideBarList>
     </div>
-    <div>
       <SideBarList>
-        <SideBarListHeader>Friends{ <Icon onClick={console.log('Friends')} name="add circle"/> }</SideBarListHeader> 
+        <SideBarListHeader><PushLeft>Friends {<Icon onClick={console.log('Friends')} name="add circle"/> }</PushLeft></SideBarListHeader> 
       </SideBarList>
-    </div>
+    
   </GroupWrapper>
 );

@@ -18,17 +18,17 @@ export const requiresAuth = createResolver((parent, args, context) => {
     }
 });
 
-export const requiresTeamAccess = createResolver(async (parent, { channelId }, { user, models }) => {
+export const requiresGroupAccess = createResolver(async (parent, { groupId }, { user, models }) => {
     if (!user || !user.id) {
       throw new Error('Not authenticated');
     }
     // check if part of the team
-    const channel = await models.Channel.findOne({ where: { id: channelId } });
+    //const group = await models.Group.findOne({ where: { id: groupId } });
     const member = await models.Member.findOne({
-      where: { teamId: channel.teamId, userId: user.id },
+      where: { groupId, userId: user.id },
     });
     if (!member) {
-      throw new Error("You have to be a member of the team to subcribe to it's messages");
+      throw new Error("You have to be a member of the group to subcribe to it's messages");
     }
 });
   
