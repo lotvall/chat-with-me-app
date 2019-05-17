@@ -33,15 +33,15 @@ const message = ({ id, text, user, created_at, url, filetype }) => (
 
 
 const MessageContainer = ({ groupId, groupName }) => {
-
+    console.log(groupId,'from groupid')
     return (
         <Query
             query={MESSAGES_QUERY}
-            variables={{ groupId, cursor: null }}
+            variables={{ groupId: parseInt(groupId, 10), cursor: null }}
             fetchPolicy={"network-only"}
         >
             {
-                ({ fetchMore, loading, error, data }) => {
+                ({ loading, error, data }) => {
                     if (loading) return null
                     if (error) console.log(error)
                     if (data) console.log('data', data)

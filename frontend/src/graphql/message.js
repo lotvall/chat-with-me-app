@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 export const MESSAGES_QUERY = gql`
-query {
-  messages(groupId: 1, cursor:null) {
+query ($groupId: Int!, $cursor: String){
+  messages(groupId: $groupId, cursor:$cursor) {
     cursor
     messages {
       text
