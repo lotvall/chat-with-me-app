@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { Mutation } from 'react-apollo'
 import styled from 'styled-components'
 import { Input, Button, Icon } from 'semantic-ui-react'
+import { CREATE_MESSAGE } from '../graphql/message'
 
 const Root = styled.div`
     grid-column: 3;
@@ -12,32 +14,34 @@ const Root = styled.div`
 const ENTER_KEY = 13
 
 const SendMessage = ({
-    placeholder,
-    values,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    isSubmitting,
-    groupId
-}) => (
+    groupName,
+    groupId,
+}) => {
+    const [text, setText] = useState("")
+    return (
+        <Mutation mutation={CREATE_MESSAGE}>
+      {(createMessage, { data }) => (
         <Root>        
             <Button icon>
                 <Icon name='plus' />
             </Button>
             <Input
-                onKeyDown={(e) => {
+                onKeyDown={async (e) => {
                     console.log(e.keyCode)
-                    if (e.keyCode === ENTER_KEY && !isSubmitting) {
-                        handleSubmit(e)
+                    if (e.keyCode === ENTER_KEY) {
+                        const response = await createMessage({variables: {text, groupId: parseInt(groupId, 10) }})
+                        setText("")
+                        console.log(response)
                     }
                 }}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                value={text}
                 name="message"
-                //value={values.message}
-                placeholder={`# ${placeholder}`}
+                onChange={e => setText(e.target.value)}
+                placeholder={`# ${groupName}`}
             />
         </Root>
-    )
+      )}
+      </Mutation>
+    )}
 
 export default SendMessage

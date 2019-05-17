@@ -15,3 +15,9 @@ query {
   }
 }
 `
+
+export const CREATE_MESSAGE = gql`
+mutation ($groupId:Int!, $text:String!){
+  createMessage (groupId: $groupId, text: $text) 
+}
+`

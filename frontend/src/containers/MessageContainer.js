@@ -62,10 +62,7 @@ const MessageContainer = ({ groupId, groupName }) => {
 
                         >
                             <SendMessage
-                                onSubmit={async (text) => {
-                                    console.log(text)
-                                }}
-                                placeholder={groupName}
+                                groupName={groupName}
                                 groupId={groupId}
                             />
                             <Comment.Group>
