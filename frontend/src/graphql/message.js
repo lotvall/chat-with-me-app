@@ -1,23 +1,23 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag"
 export const MESSAGES_QUERY = gql`
-query ($groupId: Int!, $cursor: String){
-  messages(groupId: $groupId, cursor:$cursor) {
-    cursor
-    messages {
-      text
-      id
-      filetype
-      created_at
-      user {
-        username
-      }
+    query($groupId: Int!, $cursor: String) {
+        messages(groupId: $groupId, cursor: $cursor) {
+            cursor
+            messages {
+                text
+                id
+                filetype
+                created_at
+                user {
+                    username
+                }
+            }
+        }
     }
-  }
-}
 `
 
 export const CREATE_MESSAGE = gql`
-mutation ($groupId:Int!, $text:String!){
-  createMessage (groupId: $groupId, text: $text) 
-}
+    mutation($groupId: Int!, $text: String!) {
+        createMessage(groupId: $groupId, text: $text)
+    }
 `

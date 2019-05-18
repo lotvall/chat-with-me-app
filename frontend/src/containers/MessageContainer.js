@@ -32,7 +32,7 @@ const message = ({ id, text, user, created_at, url, filetype }) => (
 );
 
 
-const MessageContainer = ({ groupId, groupName }) => {
+const MessageContainer = ({ groupName, groupId }) => {
     console.log(groupId,'from groupid')
     return (
         <Query
@@ -42,12 +42,15 @@ const MessageContainer = ({ groupId, groupName }) => {
         >
             {
                 ({ loading, error, data }) => {
-                    if (loading) return null
+                    if (loading || !data) {
+                        return null
+                    }
                     if (error) console.log(error)
                     if (data) console.log('data', data)
 
                     const messages = data.messages ? data.messages.messages : []
                     const cursor = data.messages ? data.messages.cursor : null
+                    
                     return (
                         <div
                             style={{

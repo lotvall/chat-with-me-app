@@ -10,6 +10,6 @@ const Root = styled.div`
 
 export default ({ groupName }) => (
     <Root>
-        <Header textAlign="center"># Group Name</Header>
+        <Header textAlign="center"># {groupName}</Header>
     </Root>
 )

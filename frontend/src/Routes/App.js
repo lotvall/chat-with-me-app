@@ -11,7 +11,7 @@ import { USER_QUERY } from '../graphql/user'
 const App = ({match: {params: {groupId}}}) => {
   console.log( 'groupid',groupId)
   return (
-    <Query query={USER_QUERY}>{
+    <Query query={USER_QUERY} fetchPolicy={"network-only"}>{
 
       ({ loading, error, data }) => {
         if (loading || !data) {
@@ -27,15 +27,17 @@ const App = ({match: {params: {groupId}}}) => {
 
         const {groups, username } = data.getUser
 
-        console.log(username)
+        const selectedGroup = groups.find(g => {
+          return g.id === parseInt(groupId, 10)
+        })
 
         return (
 
           <AppLayout>
             {/* <Sidebar/> */}
             <Groups groups={groups} username={username}/>
-            <Header />
-            <MessageContainer groupId={groupId} groupNam="The group name..."/>
+            <Header groupName={selectedGroup.name} />
+            <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>
           </AppLayout>
 
         )
