@@ -97,14 +97,6 @@ const MessageContainer = ({ groupName, groupId }) => {
                             />
                             <Comment.Group>
                                 {[...messages].reverse().map(message)}
-
-                                {/* <Subscription subscription={MESSAGES_SUBSCRIPTION}
-                                    variables={{ groupId: parseInt(groupId, 10) }}>
-                                    {({ data }) => {
-                                        console.log('subscription data', data)
-                                        return null
-                                    }}
-                                </Subscription> */}
                             </Comment.Group>
                             
 

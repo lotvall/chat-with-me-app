@@ -29,6 +29,9 @@ const SendMessage = ({
                 onKeyDown={async (e) => {
                     console.log(e.keyCode)
                     if (e.keyCode === ENTER_KEY) {
+                        if (!text || !text.trim()) {
+                            return
+                        }
                         const response = await createMessage({variables: {text, groupId: parseInt(groupId, 10) }})
                         setText("")
                         console.log(response)
