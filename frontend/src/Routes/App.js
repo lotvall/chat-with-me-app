@@ -1,8 +1,7 @@
 import React from 'react'
 import AppLayout from '../components/AppLayout'
 import Header from '../components/Header'
-import Groups from '../components/Groups'
-// import Sidebar from '../containers/Sidebar'
+import Sidebar from '../containers/Sidebar'
 import MessageContainer from '../containers/MessageContainer'
 import { Query } from 'react-apollo'
 
@@ -25,7 +24,7 @@ const App = ({match: {params: {groupId}}}) => {
           console.log(data) 
         }
 
-        const {groups, username } = data.getUser
+        const {groups, username, userId } = data.getUser
 
         const selectedGroup = groups.find(g => {
           return g.id === parseInt(groupId, 10)
@@ -34,8 +33,7 @@ const App = ({match: {params: {groupId}}}) => {
         return (
 
           <AppLayout>
-            {/* <Sidebar/> */}
-            <Groups groups={groups} username={username}/>
+            <Sidebar groups={groups} username={username} userId={userId} />
             <Header groupName={selectedGroup.name} />
             <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>
           </AppLayout>

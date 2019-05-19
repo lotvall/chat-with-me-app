@@ -20,7 +20,7 @@ const SendMessage = ({
     const [text, setText] = useState("")
     return (
         <Mutation mutation={CREATE_MESSAGE}>
-      {(createMessage, { data }) => (
+      {(createMessage) => (
         <Root>        
             <Button icon>
                 <Icon name='plus' />
@@ -34,7 +34,6 @@ const SendMessage = ({
                         }
                         const response = await createMessage({variables: {text, groupId: parseInt(groupId, 10) }})
                         setText("")
-                        console.log(response)
                     }
                 }}
                 value={text}
