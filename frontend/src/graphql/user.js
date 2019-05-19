@@ -5,14 +5,9 @@ query {
   getUser{
     username
     id
-    password
     groups {
       id
-      admin
       name
-      members {
-        username
-      }
     }
   }
 }
