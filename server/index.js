@@ -18,10 +18,10 @@ const typeDefs = mergeTypes(types, { all: true });
 const server = new ApolloServer({ typeDefs, resolvers,
   subscriptions: {
     onConnect: async (connectionParams, webSocket) => {
-      const { token, refreshToken } = connectionParams
-      console.log('is token here?', token, refreshToken)
+      const { token, refreshtoken } = connectionParams
+      console.log('are tokens in onConnect?', !!token, !!refreshtoken)
 
-      if (token && refreshToken) {
+      if (token && refreshtoken) {
         try { 
           const { user } = jwt.verify(token, SECRET)
           console.log('try,', user)
@@ -29,7 +29,7 @@ const server = new ApolloServer({ typeDefs, resolvers,
         } catch (err) {
           console.log('catch block')
 
-          const { user } = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
+          const { user } = await refreshTokens(token, refreshtoken, models, SECRET, SECRET2);
           if (!user) {
             throw new Error ('Not authenticated')
           }
