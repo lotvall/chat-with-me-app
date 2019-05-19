@@ -41,6 +41,7 @@ const SendMessage = ({
                 name="message"
                 onChange={e => setText(e.target.value)}
                 placeholder={`# ${groupName}`}
+                autoComplete="off"
             />
         </Root>
       )}
