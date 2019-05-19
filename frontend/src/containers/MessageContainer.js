@@ -59,17 +59,27 @@ const MessageContainer = ({ groupName, groupId }) => {
                                     updateQuery: (prev, { subscriptionData }) => {
                                         if (!subscriptionData.data) return prev;
 
-                                        const newData = {
-                                            ...prev,
-                                            messages:{
-                                                cursor,
-                                                messages: [subscriptionData.data.newGroupMessage, ...prev.messages.messages],
-                                                __typename: "MessagesResponse"
+                                        // Test to see if item is already in the store
+                                        const idAlreadyExists =
+                                            prev.messages.messages.filter(item => {
+                                                return item.id === subscriptionData.data.newGroupMessage.id;
+                                            }).length > 0;
 
+                                        // Only add it if it isn't already there
+                                        if (!idAlreadyExists) {
+
+                                            const newData = {
+                                                ...prev,
+                                                messages: {
+                                                    cursor,
+                                                    messages: [subscriptionData.data.newGroupMessage, ...prev.messages.messages],
+                                                    __typename: "MessagesResponse"
+
+                                                }
                                             }
+                                            console.log(newData)
+                                            return newData
                                         }
-                                        console.log(newData)
-                                        return newData
                                     },
                                     onError: err => console.error(err),
                                 })
@@ -77,6 +87,8 @@ const MessageContainer = ({ groupName, groupId }) => {
 
                     const messages = data.messages ? data.messages.messages : []
                     const cursor = data.messages ? data.messages.cursor : null
+
+                    console.log(messages)
                     
                     return (
                         <div
