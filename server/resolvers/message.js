@@ -83,13 +83,13 @@ export default {
                 ...messageData,
                 userId: user.id,
             });
-
+            
             pubsub.publish(NEW_GROUP_MESSAGE, {
                 groupId: args.groupId,
                 newGroupMessage: {
                   ...message.dataValues,
                   user,
-                  created_at: '' + message.dataValues.created_at,
+                  created_at: '' + message.dataValues.createdAt,
                 },
               });
 
