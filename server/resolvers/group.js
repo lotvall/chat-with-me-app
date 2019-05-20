@@ -31,7 +31,7 @@ export default {
         createGroup: requiresAuth.createResolver(async (parent, args, { models, user }) => {
             try {
                 const group = await models.Group.create({ ...args });
-                await models.Member.create({ groupId: group.id, userId: user.id, admin: true, });
+                await models.Member.create({ groupId: group.id, userId: user.id, admin: true, active: true, inviter: user.id });
                 
 
                 return {
@@ -46,24 +46,59 @@ export default {
                 };
             }
         }),
+        inviteToGroup: requiresAuth.createResolver(async (parent, { joining, groupId }, {models, user}) => {
+            // find the inviter member
+            // is the inviter an admin?
+            // find invitee, user to add
+            // does the user exist?
+            // create member
+        }),
 
-        joinGroup: requiresAuth.createResolver(async (parent, { groupId }, {models, user}) => {
+        handleGroupInvite: requiresAuth.createResolver(async (parent, { joining, groupId }, {models, user}) => {
             
-            try {
-                
-                await models.Member.create({ userId: user.id, groupId})
-                const group = await models.Group.findOne({where: { id: groupId }})
+            // is there a member already?
+            const member = await models.Member.findOne({where: { userId: user.id, groupId}})
+            if (member.active) {
+                throw new Error('You are already a member of this group')
+            }
+
+            if(joining) {
+                try {
+                    await models.Member.update({active:true}, {where: {
+                        userId: user.id, groupId
+                    }})                
+                    const group = await models.Group.findOne({where: { id: groupId }})
+                    return {
+                        ok: true,
+                        group: group
+                    } 
+                    
+                } catch(error) {
+                    return {
+                        ok: false,
+                        errors: formatErrors(error, models)
+                    }
+                }
+            }
+            if(!joining){
+                try {
+                await models.User.destroy({
+                    where: {
+                        userId: user.id, groupId
+                    }
+                })
                 return {
                     ok: true,
-                    group: group
                 } 
-                
             } catch(error) {
                 return {
                     ok: false,
                     errors: formatErrors(error, models)
                 }
             }
+            }
+            
+            
         }),
     },
 }

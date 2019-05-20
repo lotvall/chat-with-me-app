@@ -8,6 +8,7 @@ query {
     groups {
       id
       name
+      public_group
     }
   }
 }

@@ -16,9 +16,18 @@ export default {
         }
     },
     User: {
-        groups: (parent, args, { models, user }) =>{
+        groups: async (parent, args, { models, user }) =>{
             // problem med admin har
             console.log('problem med admin field tag1', user)
+            const groups = await models.sequelize.query(
+                'SELECT * FROM GROUPS JOIN members AS MEMBER ON groups.id = member.group_id WHERE member.user_id = ?',
+                {
+                replacements: [user.id],
+                model: models.Group,
+                raw: true,
+                },
+            )
+            console.log(groups)
 
             return models.sequelize.query(
                 'SELECT * FROM GROUPS JOIN members AS MEMBER ON groups.id = member.group_id WHERE member.user_id = ?',

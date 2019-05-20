@@ -7,9 +7,11 @@ import { USER_QUERY } from '../graphql/user'
 const AddGroupModal = ({ open, onClose, userId }) => {
 
   const [groupName, setGroupName] = useState("")
+  const [publicGroup, setPublicGroup] = useState(true)
+
 
   const handleSubmit = async (createGroup) => {
-    const response = await createGroup({variables: {name: groupName}})
+    const response = await createGroup({variables: {name: groupName, public: publicGroup}})
     setGroupName("")
     onClose(!open)
   }
@@ -41,6 +43,15 @@ const AddGroupModal = ({ open, onClose, userId }) => {
                   onChange={e => setGroupName(e.target.value)}
                   value={groupName} />
               </Form.Field>
+              <Form.Field>
+                <Checkbox 
+                    checked={publicGroup} 
+                    label='Public Group'
+                    onChange={() => setPublicGroup(!publicGroup)}
+                    toggle 
+
+                />
+            </Form.Field>
               <Form.Group width="equal">
                 <Button type="button" fluid onClick={() => {
                   setGroupName("")

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Query, Subscription } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { Comment } from 'semantic-ui-react'
 import moment from 'moment'
 import SendMessage from '../components/SendMessage'

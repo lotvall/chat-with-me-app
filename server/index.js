@@ -78,7 +78,7 @@ const server = new ApolloServer({ typeDefs, resolvers,
 });
 
 const PORT = 8080
-
+// { force: true }
 models.sequelize.sync().then(function () {
   server.listen(PORT).then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);

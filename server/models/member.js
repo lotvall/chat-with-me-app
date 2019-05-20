@@ -3,7 +3,22 @@ export default (sequelize, DataTypes) => {
         admin: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        active: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
+
     });
+
+    Member.associate = (models) => { 
+        Member.belongsTo(models.User, {
+        foreignKey: {
+          name: 'inviter',
+          field: 'inviter',
+        },
+      });
+    }
+    
     return Member;
 };
