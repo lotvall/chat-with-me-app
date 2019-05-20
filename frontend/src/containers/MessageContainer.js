@@ -41,7 +41,7 @@ const MessageContainer = ({ groupName, groupId }) => {
         <Query
             query={MESSAGES_QUERY}
             variables={{ groupId: parseInt(groupId, 10), cursor: null }}
-            fetchPolicy={"network-only"}
+            
         >
             {
                 ({ loading, error, data, subscribeToMore}) => {
@@ -50,6 +50,10 @@ const MessageContainer = ({ groupName, groupId }) => {
                     }
                     if (error) console.log(error)
                     if (data) console.log('data', data)
+
+                    // this doesnt run sometimes when the messages array is empty
+                    // removing fetchPolicy={"network-only"} fixed this for now
+                    // think this will have problems once we have any users and many groups
 
                     if(!unsubscribe) {
                         unsubscribe = subscribeToMore({
@@ -88,7 +92,7 @@ const MessageContainer = ({ groupName, groupId }) => {
                     const messages = data.messages ? data.messages.messages : []
                     const cursor = data.messages ? data.messages.cursor : null
 
-                    console.log(messages)
+                    console.log('is this running?', messages, groupName, groupId)
                     
                     return (
                         <div

@@ -10,9 +10,10 @@ import { USER_QUERY } from '../graphql/user'
 const App = ({match: {params: {groupId}}}) => {
   console.log( 'groupid',groupId)
   return (
-    <Query query={USER_QUERY} fetchPolicy={"network-only"}>{
+    <Query query={USER_QUERY} fetchPolicy={"network-only"} notifyOnNetworkStatusChange={true}>{
 
-      ({ loading, error, data }) => {
+      ({ loading, error, data, networkStatus}) => {
+        console.log('.....networkStatus', networkStatus);
         if (loading || !data) {
           return null
         }
