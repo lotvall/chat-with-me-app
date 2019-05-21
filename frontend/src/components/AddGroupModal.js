@@ -11,6 +11,9 @@ const AddGroupModal = ({ open, onClose, userId }) => {
 
 
   const handleSubmit = async (createGroup) => {
+    if (!groupName || !groupName.trim()) {
+      return
+    }
     const response = await createGroup({variables: {name: groupName, public: publicGroup}})
     setGroupName("")
     onClose(!open)

@@ -23,6 +23,7 @@ export default `
     }
     type Mutation {
         createGroup (name: String!, publicGroup: Boolean!) : GroupResponse!
+        joinPublicGroup(groupId: Int!) : GroupResponse!
         inviteToGroup(groupId: Int!, userId: Int!): Boolean!
         handleGroupInvite(joining: Boolean!, groupId: Int!): GroupResponse!
     }

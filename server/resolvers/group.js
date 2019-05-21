@@ -46,6 +46,42 @@ export default {
                 };
             }
         }),
+        joinPublicGroup: requiresAuth.createResolver(async (parent, { groupId }, {models, user}) => {
+
+            // is there a group?
+
+            // need to 
+
+            const group = await models.Group.findOne({where: {id: groupId}}, {raw: true})
+            console.log(group)
+            if(!group) {
+                throw new Error('No such group exists')
+            }
+            if(!group.dataValues.publicGroup) {
+                throw new Error('The group is not public')
+            }
+
+            const member = await models.Member.findOne({where: { userId: user.id, groupId}})
+            if (!!member) {
+                throw new Error('You are already a member of this group')
+            }
+            try {
+                await models.Member.create({ groupId: group.id, userId: user.id, admin: false, active: false, inviter: null });
+
+                return {
+                    ok: true,
+                    group: {
+                        ...group.dataValues,
+                        public_group: group.dataValues.publicGroup
+                    }
+                }
+
+
+            }catch(error) {
+
+            }
+        }),
+
         inviteToGroup: requiresAuth.createResolver(async (parent, { joining, groupId }, {models, user}) => {
             // find the inviter member
             // is the inviter an admin?
@@ -55,7 +91,8 @@ export default {
         }),
 
         handleGroupInvite: requiresAuth.createResolver(async (parent, { joining, groupId }, {models, user}) => {
-            
+            // is there a group?
+
             // is there a member already?
             const member = await models.Member.findOne({where: { userId: user.id, groupId}})
             if (member.active) {
