@@ -48,6 +48,8 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
                           fluid
                           search
                           selection
+                          value={groupId}
+                          onChange={(e, { value }) => setGroupId(value)}
                           options={getPublicGroups.filter((group) => {
                             if (group.members.filter(m => m.id === parseInt(userId, 10)).length === 0) {
                               return group
