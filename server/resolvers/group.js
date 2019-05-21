@@ -1,6 +1,5 @@
 import formatErrors from '../helpers/formatErrors'
 import { requiresAuth, requiresTeamAccess } from '../helpers/permission'
-import { publicDecrypt } from 'crypto';
 
 export default {
     Group: {

@@ -8,9 +8,14 @@ export default {
         admin: async (parent, args, {models, user }) => {
             const groupId = parent.id
             const userId = user.id
+            console.log(groupId, 'what the parent')
             const member = await models.Member.findOne({
                 where: { group_id: groupId, user_id: userId}
             })
+            if(!member) {
+                return false
+            }
+            console.log(member.dataValues)
             const admin = member.dataValues.admin
             return admin
         }
