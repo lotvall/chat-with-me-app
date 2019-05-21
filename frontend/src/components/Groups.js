@@ -47,7 +47,15 @@ const group = ({ id, name, public_group }) => <Link style={{color: '#b5d6ff'}} t
 export default ({groups, username, openCreateGroupModal, setOpenCreateGroupModal, openJoinGroupModal, setOpenJoinGroupModal}) => (
   <GroupWrapper>
     <div>
-      <TeamNameHeader><PushLeft>{username}</PushLeft></TeamNameHeader>
+      <TeamNameHeader><PushLeft>{username }  
+      
+      <Icon.Group style={{paddingLeft: '5px'}}>
+        <Icon name="bell" size="small"/>
+        <Icon name="circle" corner='top right' color="red"/>
+      </Icon.Group>
+      
+      
+      </PushLeft></TeamNameHeader>
       <SideBarList>
         <SideBarListHeader><PushLeft>Groups  <Icon onClick={() => setOpenCreateGroupModal(!openCreateGroupModal)} name="add circle"/> <Icon onClick={() => setOpenJoinGroupModal(!openJoinGroupModal)} name="search"/> </PushLeft></SideBarListHeader> 
         {groups.map(g => group(g))}

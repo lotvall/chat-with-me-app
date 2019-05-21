@@ -23,6 +23,8 @@ const AddGroupModal = ({ open, onClose, userId }) => {
         mutation={CREATE_GROUP}
         update={(cache, { data: { createGroup } }) => {
         const data = cache.readQuery({ query: USER_QUERY });
+
+        console.log(createGroup.group)
         data.getUser.groups.push(createGroup.group)
 
         cache.writeQuery({

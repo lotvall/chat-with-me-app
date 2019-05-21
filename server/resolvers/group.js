@@ -35,11 +35,13 @@ export default {
             try {
                 const group = await models.Group.create({ ...args });
                 await models.Member.create({ groupId: group.id, userId: user.id, admin: true, active: true, inviter: user.id });
-                
 
                 return {
                     ok: true,
-                    group: group,
+                    group: {
+                        ...group.dataValues,
+                        public_group: group.dataValues.publicGroup
+                    },
                 };
             } catch (err) {
                 console.log(err);
@@ -85,12 +87,48 @@ export default {
             }
         }),
 
-        inviteToGroup: requiresAuth.createResolver(async (parent, { joining, groupId }, {models, user}) => {
+        inviteToGroup: requiresAuth.createResolver(async (parent, { groupId, userId }, {models, user}) => {
+
             // find the inviter member
+            // is there an inviter member
             // is the inviter an admin?
             // find invitee, user to add
             // does the user exist?
             // create member
+
+            const inviterMember = await models.Member.findOne({where: {userId : user.id, groupId }}, {raw: true})
+            
+            const inviteeUser = await models.User.findOne({where: { id: userId }})
+
+            const inviteeMember = await models.Member.findOne({where: {userId, groupId}})
+
+            if(!inviterMember.dataValues) {
+                throw new Error('You are not a member of the group')
+
+            }
+            if (!inviterMember.dataValues.admin) {
+                throw new Error('You are not authorized to invite members to the group')
+            }
+
+            if (!inviteeUser.dataValues) {
+                throw new Error('There is no such user')
+            }
+
+            if (inviteeMember && inviteeMember.active) {
+                throw new Error('The user is already a member of the group')
+            }
+
+            if (inviteeMember && !inviteeMember.active) {
+                throw new Error('The user has already been invited to the group')
+            }
+
+            const newMember = models.Member.create({ groupId, userId, admin: false, active: false, inviter: user.id })
+
+            console.log(newMember)
+
+            return true
+
+            
         }),
 
         handleGroupInvite: requiresAuth.createResolver(async (parent, { joining, groupId }, {models, user}) => {
