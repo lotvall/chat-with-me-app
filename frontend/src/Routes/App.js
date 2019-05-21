@@ -25,12 +25,12 @@ const App = ({match: {params: {groupId}}}) => {
           console.log(data) 
         }
 
-        const {groups, username, userId } = data.getUser
+        const {groups, username, id } = data.getUser
 
         const selectedGroup = groups.find(g => {
           return g.id === parseInt(groupId, 10)
         })
-
+        const userId = id        
         return (
 
           <AppLayout>

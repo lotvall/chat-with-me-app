@@ -9,3 +9,28 @@ mutation ($name:String!, $public:Boolean!){
     }
   }
 }`
+
+export const PUBLIC_GROUP_QUERY = gql`
+query{
+  getPublicGroups{
+    id
+    name
+    admin
+    members {
+      id
+    }
+  }
+}
+`
+
+export const JOIN_PUBLIC_GROUP = gql`
+mutation($groupId: Int!) {
+  joinPublicGroup(groupId: $groupId) {
+  group {
+    name
+    public_group
+    id
+    admin
+  }
+}
+}`
