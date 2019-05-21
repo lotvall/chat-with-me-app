@@ -1,5 +1,6 @@
 import formatErrors from '../helpers/formatErrors'
 import { requiresAuth, requiresTeamAccess } from '../helpers/permission'
+import { publicDecrypt } from 'crypto';
 
 export default {
     Group: {
@@ -25,7 +26,10 @@ export default {
                         where: { id: groupId },
                     }]   
                 }, { raw: true })
-        })
+        }),
+        getPublicGroups: requiresAuth.createResolver(async (parent, args, { models, user }) => {
+            return await models.Group.findAll({where:{ public_group: true}})
+        }),
     },
     Mutation: {
         createGroup: requiresAuth.createResolver(async (parent, args, { models, user }) => {

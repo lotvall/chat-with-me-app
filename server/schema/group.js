@@ -19,6 +19,7 @@ export default `
     }
     type Query {
         getGroupMembers(groupId: Int!): [User!]!
+        getPublicGroups: [Group!]!
         getPendingGroupInvites: [GroupInvite!]!
     }
     type Mutation {
