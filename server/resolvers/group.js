@@ -29,13 +29,37 @@ export default {
         getPublicGroups: requiresAuth.createResolver(async (parent, args, { models, user }) => {
             return await models.Group.findAll({where:{ public_group: true}})
         }),
+        getPendingGroupInvites: requiresAuth.createResolver(async (parent, args, { models, user }) => {
+            const pendingMemberships = await models.Member.findAll({where: {userId: user.id, active: false } }).map(m => m.dataValues)
+
+            console.log('pending members', pendingMemberships) 
+
+            const groupInvites = pendingMemberships.map(async m => {
+                const group = await models.Group.findOne({where: { id : m.groupId }})
+                console.log(group.dataValues)
+
+                const inviter = await models.User.findOne({where: { id: m.inviter }})
+                return {
+                    group: group.dataValues,
+                    inviter: inviter ? inviter.dataValues : null
+                }
+            })
+            // 3 
+            console.log('groupInvites, returns 3 promises', groupInvites)
+
+            const retValue = await Promise.all(groupInvites)
+
+            console.log('retvalue', retValue)
+
+            return retValue
+        }),
     },
     Mutation: {
         createGroup: requiresAuth.createResolver(async (parent, args, { models, user }) => {
             try {
                 const group = await models.Group.create({ ...args });
                 await models.Member.create({ groupId: group.id, userId: user.id, admin: true, active: true, inviter: user.id });
-
+                
                 return {
                     ok: true,
                     group: {
