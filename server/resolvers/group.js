@@ -156,6 +156,7 @@ export default {
         }),
 
         handleGroupInvite: requiresAuth.createResolver(async (parent, { joining, groupId }, {models, user}) => {
+            
             // is there a group?
             const group = await models.Group.findOne({where: { id: groupId}})
 
@@ -163,12 +164,15 @@ export default {
                 throw new Error('There is no such group')
             }
 
+            // is there a member?
 
-            // is there a member already?
             const member = await models.Member.findOne({where: { userId: user.id, groupId}})
             if (!member) {
                 throw new Error('You have not been invited to this group')
             }
+
+            // is the member active?
+
             if (member.active) {
                 throw new Error('You are already a member of this group')
             }
@@ -193,7 +197,7 @@ export default {
             }
             if(!joining){
                 try {
-                await models.User.destroy({
+                await models.Member.destroy({
                     where: {
                         userId: user.id, groupId
                     }
