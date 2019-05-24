@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import Groups from '../components/Groups'
 import AddGroupModal from '../components/AddGroupModal'
 import JoinPublicGroupModal from '../components/JoinPublicGroupModal';
+import HandleGroupInvitesModal from '../components/HandleGroupInvitesModal';
 
 
 
@@ -38,6 +39,7 @@ const Sidebar = ({groups, username, userId}) => {
                                         onClose={setOpenJoinGroupModal}
                                         userId={userId}
                                     />
+                                    <HandleGroupInvitesModal />
                                 </>
         )
     } 

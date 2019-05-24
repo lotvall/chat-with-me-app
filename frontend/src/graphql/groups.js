@@ -33,6 +33,37 @@ mutation($groupId: Int!) {
     public_group
     id
     admin
+    
   }
 }
 }`
+
+export const GET_GROUP_INVITES = gql`
+query {
+  getPendingGroupInvites {
+    group {
+      name
+      id
+      members {
+        id
+      }
+    }
+    inviter {
+      id
+      username
+    }
+  }
+}
+`
+
+export const HANDLE_GROUP_INVITE = gql `
+mutation ($joining: Boolean!, $groupId: Int!){
+  handleGroupInvite(joining: $joining, groupId: $groupId) {
+    ok
+    group {
+      id
+      name
+    }
+  }
+}
+`

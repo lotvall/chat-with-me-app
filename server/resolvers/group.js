@@ -4,7 +4,7 @@ import { requiresAuth, requiresTeamAccess } from '../helpers/permission'
 export default {
     Group: {
         members: async ({id}, args, { models }) => {
-            const members = await models.Member.findAll({where: { group_id: id}}).map(el => el.get({ plain: true }))
+            const members = await models.Member.findAll({where: { group_id: id, active: true }}).map(el => el.get({ plain: true }))
             
             const users = members.map(async m => {
                 const user = await models.User.findOne({where: { id: m.userId}})
