@@ -1,36 +1,32 @@
-import React, { useState } from 'react'
-import { Modal, Card } from 'semantic-ui-react'
-import { Mutation, Query } from 'react-apollo';
+import React from 'react'
+import { Modal, Card, Button, Icon } from 'semantic-ui-react'
+import { Query } from 'react-apollo';
 import { GET_GROUP_INVITES } from '../graphql/groups'
 import GroupInvite from './GroupInvite'
 
-const HandleGroupInvitesModal = ({ open, onClose, userId }) => {
+const HandleGroupInvitesModal = ({ open, onClose }) => {
 
-  const [groupName, setGroupName] = useState("")
-  const [publicGroup, setPublicGroup] = useState(true)
-
-
-  const handleSubmit = async (createGroup) => {
-    if (!groupName || !groupName.trim()) {
-      return
-    }
-    const response = await createGroup({ variables: { name: groupName, public: publicGroup } })
-    setGroupName("")
-    onClose(!open)
-  }
   return (
 
-    <Query query={GET_GROUP_INVITES} fetchPolicy="network-only">
-      {({ loading, data: { getPendingGroupInvites = []}, error }) => {
+    <Query query={GET_GROUP_INVITES}>
+      {({ loading, data: { getPendingGroupInvites = [] }, error }) => {
         console.log(getPendingGroupInvites)
         return (
-          <Modal dimmer={"blurring"} open={true} style={{ width: '50%', height: '50%' }}>
+          <Modal dimmer={"blurring"} open={open} style={{ width: '50%', height: '50%' }}>
             <Modal.Header>Pending Invites</Modal.Header>
             <Modal.Content scrolling style={{ height: '100%' }}>
               <Card.Group>
                 {getPendingGroupInvites.map(gi => <GroupInvite key={gi.group.id} group={gi.group} inviter={gi.inviter} />)}
+
+
               </Card.Group>
+
             </Modal.Content>
+
+            <Modal.Actions >
+          
+              <Button color='green' onClick={() => onClose(!open)}><Icon name='checkmark' /> Done</Button>
+            </Modal.Actions>
           </Modal>
 
         )

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Checkbox, Form, Input, Button, Modal } from 'semantic-ui-react'
+import { Checkbox, Form, Input, Button, Modal, Icon } from 'semantic-ui-react'
 import { Mutation } from 'react-apollo';
 import {CREATE_GROUP} from '../graphql/groups'
 import { USER_QUERY } from '../graphql/user'
@@ -35,7 +35,7 @@ const AddGroupModal = ({ open, onClose, userId }) => {
  
         >
       {(createGroup) => (
-        <Modal open={open}>
+        <Modal dimmer={"blurring"} open={open} style={{ width: '50%',     height: 'fit-content' }}>
           <Modal.Header>Create Group</Modal.Header>
           <Modal.Content>
             <Form>
@@ -57,18 +57,19 @@ const AddGroupModal = ({ open, onClose, userId }) => {
 
                 />
             </Form.Field>
-              <Form.Group width="equal">
-                <Button type="button" fluid onClick={() => {
-                  setGroupName("")
-                  onClose(!open)
-                }}
-                >Cancel</Button>
-                <Button type="submit" onClick={() => handleSubmit(createGroup)} 
-                  fluid>Add Group</Button>
-              </Form.Group>
+              
             </Form>
 
           </Modal.Content>
+          <Modal.Actions >
+                <Button type="button" color='red' onClick={() => {
+                  setGroupName("")
+                  onClose(!open)
+                }}
+                > <Icon name='cross' />Cancel</Button>
+                <Button type="submit" onClick={() => handleSubmit(createGroup)}  color='green' ><Icon name='checkmark' /> Create</Button>
+
+          </Modal.Actions>
         </Modal>
       )}
     </Mutation>

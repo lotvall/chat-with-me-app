@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dropdown, Form, Input, Button, Modal } from 'semantic-ui-react'
+import { Dropdown, Form, Icon, Button, Modal } from 'semantic-ui-react'
 import { Mutation, Query } from 'react-apollo';
 import { JOIN_PUBLIC_GROUP, PUBLIC_GROUP_QUERY } from '../graphql/groups'
 import { USER_QUERY } from '../graphql/user'
@@ -38,7 +38,7 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
 
             >
               {(joinPublicGroup) => (
-                <Modal open={open}>
+                <Modal dimmer={"blurring"} open={open} style={{ width: '50%', height: 'fit-content' }}>
                   <Modal.Header>Join a public group</Modal.Header>
                   <Modal.Content>
                     <Form>
@@ -59,15 +59,15 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
                             .map(g => ({ key: g.id, value: g.id, text: g.name }))}
                         />
                       </Form.Field>
-                      <Form.Group width="equal">
-                        <Button type="button" fluid onClick={() => {
+                      <Modal.Actions >
+                        <Button type="button" color='red' onClick={() => {
                           setGroupId(-1)
                           onClose(!open)
                         }}
-                        >Cancel</Button>
-                        <Button type="submit" onClick={() => handleSubmit(joinPublicGroup)}
-                          fluid>Join Group</Button>
-                      </Form.Group>
+                        > <Icon name='cross' /> Cancel</Button>
+                        <Button type="submit" color='green' onClick={() => handleSubmit(joinPublicGroup)}
+                          ><Icon name='checkmark' /> Join Group</Button>
+                      </Modal.Actions>
                     </Form>
 
                   </Modal.Content>

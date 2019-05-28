@@ -44,13 +44,13 @@ const Bubble = ({ on = true }) => (on ? <Green>●</Green> : '○');
 
 const group = ({ id, name, public_group }) => <Link style={{color: '#b5d6ff'}} to={`/app/${id}`} key={`group-${id}`}><SideBarListItem><PushLeft>{public_group ? <Icon name="globe" /> : <Icon name="lock" />} {name}</PushLeft></SideBarListItem></Link>
 
-export default ({groups, username, openCreateGroupModal, setOpenCreateGroupModal, openJoinGroupModal, setOpenJoinGroupModal}) => (
+export default ({groups, username, openCreateGroupModal, setOpenCreateGroupModal, openJoinGroupModal, setOpenJoinGroupModal, openHandleGroupInvitesModal, setOpenHandleGroupInvitesModal}) => (
   <GroupWrapper>
     <div>
       <TeamNameHeader><PushLeft>{username }  
       
       <Icon.Group style={{paddingLeft: '5px'}}>
-        <Icon name="bell" size="small"/>
+        <Icon name="bell" size="small" onClick={() => setOpenHandleGroupInvitesModal(!openHandleGroupInvitesModal)}/>
         <Icon name="circle" corner='top right' color="red"/>
       </Icon.Group>
       

@@ -11,6 +11,7 @@ import HandleGroupInvitesModal from '../components/HandleGroupInvitesModal';
 const Sidebar = ({groups, username, userId}) => {
   const [ openCreateGroupModal, setOpenCreateGroupModal ] = useState(false)
   const [ openJoinGroupModal, setOpenJoinGroupModal ] = useState(false)
+  const [openHandleGroupInvitesModal, setOpenHandleGroupInvitesModal] = useState(false)
 
   console.log(userId)
 
@@ -28,6 +29,10 @@ const Sidebar = ({groups, username, userId}) => {
                                         //join public group modal
                                         openJoinGroupModal={openJoinGroupModal}
                                         setOpenJoinGroupModal={setOpenJoinGroupModal}
+
+                                        //handle group invites modal
+                                        openHandleGroupInvitesModal={openHandleGroupInvitesModal}
+                                        setOpenHandleGroupInvitesModal={setOpenHandleGroupInvitesModal}
                                     />
                                     <AddGroupModal 
                                         open={openCreateGroupModal}
@@ -39,7 +44,10 @@ const Sidebar = ({groups, username, userId}) => {
                                         onClose={setOpenJoinGroupModal}
                                         userId={userId}
                                     />
-                                    <HandleGroupInvitesModal />
+                                    <HandleGroupInvitesModal 
+                                        open={openHandleGroupInvitesModal}
+                                        onClose={setOpenHandleGroupInvitesModal}
+                                    />
                                 </>
         )
     } 
