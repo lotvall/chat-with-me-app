@@ -34,6 +34,15 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
                   query: USER_QUERY,
                   data
                 });
+
+                const publicGroupData = cache.readQuery({ query:PUBLIC_GROUP_QUERY})
+
+                const newPublicGroupData = publicGroupData.getPublicGroups.filter(group => group.id !== joinPublicGroup.group.id)
+
+                cache.writeQuery({
+                  query: PUBLIC_GROUP_QUERY,
+                  data:newPublicGroupData
+                })
               }}
 
             >
@@ -64,7 +73,7 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
                           setGroupId(-1)
                           onClose(!open)
                         }}
-                        > <Icon name='cross' /> Cancel</Button>
+                        > <Icon name='cross'/> Cancel</Button>
                         <Button type="submit" color='green' onClick={() => handleSubmit(joinPublicGroup)}
                           ><Icon name='checkmark' /> Join Group</Button>
                       </Modal.Actions>
