@@ -55,9 +55,9 @@ export default {
         }),
     },
     Mutation: {
-        createGroup: requiresAuth.createResolver(async (parent, args, { models, user }) => {
+        createGroup: requiresAuth.createResolver(async (parent, { input }, { models, user }) => {
             try {
-                const group = await models.Group.create({ ...args });
+                const group = await models.Group.create({ ...input });
                 await models.Member.create({ groupId: group.id, userId: user.id, admin: true, active: true, inviter: user.id });
                 
                 return {

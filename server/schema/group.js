@@ -22,8 +22,13 @@ export default `
         getPublicGroups: [Group!]!
         getPendingGroupInvites: [GroupInvite!]!
     }
+    input GroupInput {
+        name: String!
+        publicGroup: Boolean!
+        members: [Int!]
+    }
     type Mutation {
-        createGroup (name: String!, publicGroup: Boolean!) : GroupResponse!
+        createGroup (input: GroupInput!) : GroupResponse!
         joinPublicGroup(groupId: Int!) : GroupResponse!
         inviteToGroup(groupId: Int!, userId: Int!): Boolean!
         handleGroupInvite(joining: Boolean!, groupId: Int!): GroupResponse!
