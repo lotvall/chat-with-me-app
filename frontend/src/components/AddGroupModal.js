@@ -9,7 +9,7 @@ const AddGroupModal = ({ open, onClose, userId }) => {
 
   const [groupName, setGroupName] = useState("")
   const [publicGroup, setPublicGroup] = useState(true)
-  const [groupMembers, setGroupMembers] = useState([])
+  const [groupMembers, setGroupMembers] = useState(null)
 
 
 
@@ -17,7 +17,7 @@ const AddGroupModal = ({ open, onClose, userId }) => {
     if (!groupName || !groupName.trim()) {
       return
     }
-    const response = await createGroup({ variables: { name: groupName, public: publicGroup } })
+    const response = await createGroup({ variables: { name: groupName, public: publicGroup, members: groupMembers } })
     setGroupName("")
     onClose(!open)
   }
