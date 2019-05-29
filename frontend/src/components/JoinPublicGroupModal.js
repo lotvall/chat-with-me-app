@@ -7,8 +7,6 @@ import { USER_QUERY } from '../graphql/user'
 const JoinPublicGroupModal = ({ open, onClose, userId }) => {
 
   const [groupId, setGroupId] = useState(-1)
-  const [groupOptions, setGroupOptions] = useState([])
-
 
   const handleSubmit = async (joinPublicGroup) => {
     if (groupId < 1) {
