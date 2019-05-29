@@ -61,9 +61,6 @@ export default ({groups, username, openCreateGroupModal, setOpenCreateGroupModal
         {groups.map(g => group(g))}
       </SideBarList>
     </div>
-      <SideBarList>
-        <SideBarListHeader><PushLeft>Friends {<Icon onClick={console.log('Friends')} name="add circle"/> }</PushLeft></SideBarListHeader> 
-      </SideBarList>
     
   </GroupWrapper>
 );

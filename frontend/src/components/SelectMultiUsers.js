@@ -13,6 +13,7 @@ const SelectMultiUsers = ({ userId, selectedMembers, handleChange, placeholder }
           return (
 
             <Dropdown
+              multiple={true}
               placeholder={placeholder}
               fluid
               search

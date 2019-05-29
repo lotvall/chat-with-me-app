@@ -1,27 +1,30 @@
 import React, { useState } from 'react'
 import { Checkbox, Form, Input, Button, Modal, Icon } from 'semantic-ui-react'
 import { Mutation } from 'react-apollo';
-import {CREATE_GROUP} from '../graphql/groups'
+import { CREATE_GROUP } from '../graphql/groups'
 import { USER_QUERY } from '../graphql/user'
+import SelectMultiUsers from './SelectMultiUsers'
 
 const AddGroupModal = ({ open, onClose, userId }) => {
 
   const [groupName, setGroupName] = useState("")
   const [publicGroup, setPublicGroup] = useState(true)
+  const [groupMembers, setGroupMembers] = useState([])
+
 
 
   const handleSubmit = async (createGroup) => {
     if (!groupName || !groupName.trim()) {
       return
     }
-    const response = await createGroup({variables: {name: groupName, public: publicGroup}})
+    const response = await createGroup({ variables: { name: groupName, public: publicGroup } })
     setGroupName("")
     onClose(!open)
   }
   return (
-    <Mutation 
-        mutation={CREATE_GROUP}
-        update={(cache, { data: { createGroup } }) => {
+    <Mutation
+      mutation={CREATE_GROUP}
+      update={(cache, { data: { createGroup } }) => {
         const data = cache.readQuery({ query: USER_QUERY });
 
         console.log(createGroup.group)
@@ -32,10 +35,10 @@ const AddGroupModal = ({ open, onClose, userId }) => {
           data
         });
       }}
- 
-        >
+
+    >
       {(createGroup) => (
-        <Modal dimmer={"blurring"} open={open} style={{ width: '50%',     height: 'fit-content' }}>
+        <Modal dimmer={"blurring"} open={open} style={{ width: '50%', height: 'fit-content' }}>
           <Modal.Header>Create Group</Modal.Header>
           <Modal.Content>
             <Form>
@@ -49,25 +52,33 @@ const AddGroupModal = ({ open, onClose, userId }) => {
                   value={groupName} />
               </Form.Field>
               <Form.Field>
-                <Checkbox 
-                    checked={publicGroup} 
-                    label='Public Group'
-                    onChange={() => setPublicGroup(!publicGroup)}
-                    toggle 
+                <SelectMultiUsers
+                  selectedMembers={groupMembers}
+                  handleChange={(e, { value }) => setGroupMembers(value)}
+                  placeholder="Select users to invite to your group"
+                  userId={userId}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  checked={publicGroup}
+                  label='Public Group'
+                  onChange={() => setPublicGroup(!publicGroup)}
+                  toggle
 
                 />
-            </Form.Field>
-              
+              </Form.Field>
+
             </Form>
 
           </Modal.Content>
           <Modal.Actions >
-                <Button type="button" color='red' onClick={() => {
-                  setGroupName("")
-                  onClose(!open)
-                }}
-                > <Icon name='close' />Cancel</Button>
-                <Button type="submit" onClick={() => handleSubmit(createGroup)}  color='green' ><Icon name='checkmark' /> Create</Button>
+            <Button type="button" color='red' onClick={() => {
+              setGroupName("")
+              onClose(!open)
+            }}
+            > <Icon name='close' />Cancel</Button>
+            <Button type="submit" onClick={() => handleSubmit(createGroup)} color='green' ><Icon name='checkmark' /> Create</Button>
 
           </Modal.Actions>
         </Modal>
