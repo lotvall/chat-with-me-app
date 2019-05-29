@@ -13,6 +13,8 @@ const Sidebar = ({groups, username, userId}) => {
   const [ openJoinGroupModal, setOpenJoinGroupModal ] = useState(false)
   const [openHandleGroupInvitesModal, setOpenHandleGroupInvitesModal] = useState(false)
 
+  const [notifications, setNotifications] = useState(false)
+
   console.log(userId)
 
 
@@ -21,6 +23,7 @@ const Sidebar = ({groups, username, userId}) => {
                                     <Groups 
                                         groups={groups} 
                                         username={username}
+                                        notifications={notifications}
 
                                         //create group modal
                                         openCreateGroupModal={openCreateGroupModal}
@@ -47,6 +50,7 @@ const Sidebar = ({groups, username, userId}) => {
                                     <HandleGroupInvitesModal 
                                         open={openHandleGroupInvitesModal}
                                         onClose={setOpenHandleGroupInvitesModal}
+                                        handleNotification={setNotifications}
                                     />
                                 </>
         )

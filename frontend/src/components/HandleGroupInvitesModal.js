@@ -4,13 +4,19 @@ import { Query } from 'react-apollo';
 import { GET_GROUP_INVITES } from '../graphql/groups'
 import GroupInvite from './GroupInvite'
 
-const HandleGroupInvitesModal = ({ open, onClose }) => {
+const HandleGroupInvitesModal = ({ open, onClose, handleNotification }) => {
 
   return (
 
     <Query query={GET_GROUP_INVITES}>
       {({ loading, data: { getPendingGroupInvites = [] }, error }) => {
         console.log(getPendingGroupInvites)
+        if(getPendingGroupInvites.length > 0) {
+          handleNotification(true)
+
+        } else {
+          handleNotification(false)
+        }
         return (
           <Modal dimmer={"blurring"} open={open} style={{ width: '50%', height: '50%' }}>
             <Modal.Header>Pending Invites</Modal.Header>
