@@ -66,7 +66,7 @@ const AddGroupModal = ({ open, onClose, userId }) => {
                   setGroupName("")
                   onClose(!open)
                 }}
-                > <Icon name='cross' />Cancel</Button>
+                > <Icon name='close' />Cancel</Button>
                 <Button type="submit" onClick={() => handleSubmit(createGroup)}  color='green' ><Icon name='checkmark' /> Create</Button>
 
           </Modal.Actions>

@@ -73,7 +73,7 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
                           setGroupId(-1)
                           onClose(!open)
                         }}
-                        > <Icon name='cross'/> Cancel</Button>
+                        > <Icon name='close'/> Cancel</Button>
                         <Button type="submit" color='green' onClick={() => handleSubmit(joinPublicGroup)}
                           ><Icon name='checkmark' /> Join Group</Button>
                       </Modal.Actions>
