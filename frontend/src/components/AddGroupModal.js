@@ -25,6 +25,8 @@ const AddGroupModal = ({ open, onClose, userId }) => {
     }
     const response = await createGroup({ variables: { input: GroupInput } })
     setGroupName("")
+    setPublicGroup(true)
+    setGroupMembers([])
     onClose(!open)
   }
   return (
