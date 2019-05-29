@@ -18,6 +18,7 @@ export const ALL_USERS_QUERY = gql `
 query {
   allUsers {
     username
+    id
   }
 }
 `
