@@ -30,12 +30,15 @@ const App = ({match: {params: {groupId}}}) => {
         const selectedGroup = groups.find(g => {
           return g.id === parseInt(groupId, 10)
         })
-        const userId = id        
+        const userId = id 
+
+        console.log(selectedGroup)       
         return (
+
 
           <AppLayout>
             <Sidebar groups={groups} username={username} userId={userId} />
-            <Header groupName={selectedGroup.name} />
+            <Header groupName={selectedGroup.name}  />
             <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>
           </AppLayout>
 
