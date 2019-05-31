@@ -34,14 +34,7 @@ export default {
             )
             console.log(groups)
 
-            return models.sequelize.query(
-                'SELECT * FROM GROUPS JOIN members AS MEMBER ON groups.id = member.group_id WHERE member.user_id = ?',
-                {
-                replacements: [user.id],
-                model: models.Group,
-                raw: true,
-                },
-            )
+            return groups
         },
     },
     Query: {

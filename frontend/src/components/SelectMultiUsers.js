@@ -3,7 +3,9 @@ import { Dropdown, Form } from 'semantic-ui-react'
 import { Query } from 'react-apollo';
 import { ALL_USERS_QUERY } from '../graphql/user'
 
-const SelectMultiUsers = ({ userId, selectedMembers, handleChange, placeholder }) => {
+const SelectMultiUsers = ({ userId, selectedMembers, currentMembers = [], handleChange, placeholder }) => {
+  console.log(userId)
+  console.log(currentMembers)
 
   return (
     <Query query={ALL_USERS_QUERY}>
@@ -20,7 +22,10 @@ const SelectMultiUsers = ({ userId, selectedMembers, handleChange, placeholder }
               selection
               value={selectedMembers}
               onChange={handleChange}
-              options={allUsers.filter(user => user.id !== userId).map(m => ({ key: m.id, value: m.id, text: m.username }))}
+              options={allUsers
+                .filter(user => user.id !== userId)
+                .filter((user) => !currentMembers.find(({ id }) => user.id === id))
+                .map(m => ({ key: m.id, value: m.id, text: m.username }))}
 
             />
           )

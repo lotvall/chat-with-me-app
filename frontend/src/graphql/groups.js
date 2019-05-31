@@ -6,6 +6,10 @@ mutation ($input: GroupInput!){
     ok
     group {
       name
+      members{
+        id
+        username
+      }
       id
       public_group
     }
@@ -64,6 +68,25 @@ mutation ($joining: Boolean!, $groupId: Int!){
       id
       name
     }
+  }
+}
+`
+
+export const INVITE_MEMBERS = gql`
+mutation ($input:InviteInput!){
+  inviteToGroup (input:$input) {
+    userId
+    error
+    ok
+  }
+}
+`
+
+export const GET_GROUP_MEMBERS = gql`
+query ($groupId: Int!){
+  getGroupMembers(groupId: $groupId) {
+    id
+    
   }
 }
 `

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AppLayout from '../components/AppLayout'
 import Header from '../components/Header'
 import Sidebar from '../containers/Sidebar'
@@ -6,14 +6,17 @@ import MessageContainer from '../containers/MessageContainer'
 import { Query } from 'react-apollo'
 
 import { USER_QUERY } from '../graphql/user'
+import GroupMembersModal from '../components/GroupMembersModal'
 
 const App = ({match: {params: {groupId}}}) => {
+
+  const [openGroupMemeberModal, setOpenGroupMemeberModal] = useState(false)
+
   console.log( 'groupid',groupId)
   return (
-    <Query query={USER_QUERY} fetchPolicy={"network-only"} notifyOnNetworkStatusChange={true}>{
+    <Query query={USER_QUERY}>{
 
-      ({ loading, error, data, networkStatus}) => {
-        console.log('.....networkStatus', networkStatus);
+      ({ loading, error, data}) => {
         if (loading || !data) {
           return null
         }
@@ -32,15 +35,20 @@ const App = ({match: {params: {groupId}}}) => {
         })
         const userId = id 
 
+
         console.log(selectedGroup)       
         return (
 
 
           <AppLayout>
             <Sidebar groups={groups} username={username} userId={userId} />
-            <Header groupName={selectedGroup.name}  />
+            <Header groupName={selectedGroup.name} groupMembers={selectedGroup.members}  
+              open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}
+
+            />
             <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>
-          </AppLayout>
+            <GroupMembersModal currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}/>
+            </AppLayout>
 
         )
       }

@@ -9,36 +9,19 @@ const Root = styled.div`
     padding-left: 30px;
 `
 
-export default ({ groupName }) => (
+export default ({ groupName, groupMembers, open, onClose }) => (
     <Root>
         <Header>
         <div style={{fontSize: '14px'}}>
 
-        <Button compact style={{paddingRight: '5px!important', background: 'none'}} size='small' content='4' icon='user outline' />
-        {  }
+         <Button onClick={()=> onClose(!open)} compact style={{paddingRight: '5px!important', background: 'none'}} size='small' content={groupMembers.length} icon='user outline' />
          #{groupName}
 
         
         </div>
 
-        {/* 
+    
         
-        <Button as='div' labelPosition='right'>
-      <Button basic color='blue'>
-        <Icon name='fork' />
-        Fork
-      </Button>
-      <Label as='a' basic color='blue' pointing='left'>
-        2,048
-      </Label>
-    </Button>
-        
-         */}
-        
-
-         
-
-         {/* <Icon name="circle add" size='tiny'/> */}
         </Header>
     </Root>
 )

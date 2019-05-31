@@ -27,10 +27,21 @@ export default `
         publicGroup: Boolean!
         members: [Int!]
     }
+    input InviteInput {
+       groupId: Int!
+       userIds: [Int!]! 
+    }
+
+    type InviteResponse {
+        ok: Boolean!,
+        userId: Int!,
+        error: String
+    }
+
     type Mutation {
         createGroup (input: GroupInput!) : GroupResponse!
         joinPublicGroup(groupId: Int!) : GroupResponse!
-        inviteToGroup(groupId: Int!, userId: Int!): Boolean!
+        inviteToGroup(input: InviteInput!): [InviteResponse!]!
         handleGroupInvite(joining: Boolean!, groupId: Int!): GroupResponse!
     }
 

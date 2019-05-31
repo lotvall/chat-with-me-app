@@ -6,6 +6,10 @@ query {
     username
     id
     groups {
+      members {
+        username
+        id
+      }
       id
       name
       public_group

@@ -63,7 +63,7 @@ export default {
                 console.log(group)
                 await models.Member.create({ groupId: group.id, userId: user.id, admin: true, active: true, inviter: user.id });
 
-                if ( input.members.length > 0)  {
+                if ( input.members && input.members.length > 0)  {
                     input.members.map(async m=> {
                         await models.Member.create({ groupId: group.dataValues.id, userId: m, admin: false, active: false, inviter: user.id });
                     })
@@ -120,8 +120,8 @@ export default {
             }
         }),
 
-        inviteToGroup: requiresAuth.createResolver(async (parent, { groupId, userId }, {models, user}) => {
-
+        inviteToGroup: requiresAuth.createResolver(async (parent, { input: { groupId, userIds } }, {models, user}) => {
+            console.log(groupId, userIds)
             // find the inviter member
             // is there an inviter member
             // is the inviter an admin?
@@ -130,10 +130,6 @@ export default {
             // create member
 
             const inviterMember = await models.Member.findOne({where: {userId : user.id, groupId }}, {raw: true})
-            
-            const inviteeUser = await models.User.findOne({where: { id: userId }})
-
-            const inviteeMember = await models.Member.findOne({where: {userId, groupId}})
 
             if(!inviterMember.dataValues) {
                 throw new Error('You are not a member of the group')
@@ -143,23 +139,49 @@ export default {
                 throw new Error('You are not authorized to invite members to the group')
             }
 
-            if (!inviteeUser.dataValues) {
-                throw new Error('There is no such user')
-            }
+            const InvitedMembers = userIds.map(async userId => {
+                const inviteeUser = await models.User.findOne({where: { id: userId }})
+                const inviteeMember = await models.Member.findOne({where: {userId, groupId}})
 
-            if (inviteeMember && inviteeMember.active) {
-                throw new Error('The user is already a member of the group')
-            }
+                if (!inviteeUser.dataValues) {
+                    return {
+                        userId,
+                        ok: false,
+                        error: 'There is no such user'
+                    }
+                }
+    
+                if (inviteeMember && inviteeMember.active) {
+                    return {
+                        userId,
+                        ok: false,
+                        error:'The user is already a member of the group'
+                    }
+                }
+    
+                if (inviteeMember && !inviteeMember.active) {
+                    return {
+                        userId,
+                        ok: false,
+                        error:'The user has already been invited to the group'
+                    }
+                }
 
-            if (inviteeMember && !inviteeMember.active) {
-                throw new Error('The user has already been invited to the group')
-            }
+                const newMember = models.Member.create({ groupId, userId, admin: false, active: false, inviter: user.id })
 
-            const newMember = models.Member.create({ groupId, userId, admin: false, active: false, inviter: user.id })
+                console.log(newMember)
 
-            console.log(newMember)
+                return {
+                    ok: true,
+                    userId
+                }
+            })
 
-            return true
+            
+
+
+
+            return InvitedMembers
 
             
         }),
