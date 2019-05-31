@@ -86,6 +86,7 @@ export const GET_GROUP_MEMBERS = gql`
 query ($groupId: Int!){
   getGroupMembers(groupId: $groupId) {
     id
+    username
     
   }
 }

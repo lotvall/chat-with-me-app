@@ -14,6 +14,8 @@ export default ({ groupName, groupMembers, open, onClose }) => (
         <Header>
         <div style={{fontSize: '14px'}}>
 
+        <Button onClick={()=> onClose(!open)} compact style={{paddingRight: '5px!important', background: 'none'}} size='small' icon='plus' />
+
          <Button onClick={()=> onClose(!open)} compact style={{paddingRight: '5px!important', background: 'none'}} size='small' content={groupMembers.length} icon='user outline' />
          #{groupName}
 

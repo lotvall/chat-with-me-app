@@ -7,10 +7,12 @@ import { Query } from 'react-apollo'
 
 import { USER_QUERY } from '../graphql/user'
 import GroupMembersModal from '../components/GroupMembersModal'
+import ViewMembersModal from '../components/ViewMembersModal';
 
 const App = ({match: {params: {groupId}}}) => {
 
   const [openGroupMemeberModal, setOpenGroupMemeberModal] = useState(false)
+  const [openViewMembersModal, setOpenViewMembersModal] = useState(false)
 
   console.log( 'groupid',groupId)
   return (
@@ -48,6 +50,10 @@ const App = ({match: {params: {groupId}}}) => {
             />
             <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>
             <GroupMembersModal currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}/>
+
+            <ViewMembersModal 
+              currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openViewMembersModal} onClose={setOpenViewMembersModal}/>
+            />
             </AppLayout>
 
         )
