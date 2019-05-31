@@ -12,6 +12,7 @@ query {
       }
       id
       name
+      admin
       public_group
     }
   }

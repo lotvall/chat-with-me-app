@@ -44,8 +44,10 @@ const App = ({match: {params: {groupId}}}) => {
 
           <AppLayout>
             <Sidebar groups={groups} username={username} userId={userId} />
-            <Header groupName={selectedGroup.name} groupMembers={selectedGroup.members}  
-              open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}
+            <Header admin={selectedGroup.admin} groupName={selectedGroup.name} groupMembers={selectedGroup.members}  
+              openAdd={openGroupMemeberModal} closeAdd={setOpenGroupMemeberModal}
+              
+              openCheck={openViewMembersModal} closeCheck={setOpenViewMembersModal}
 
             />
             <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>
@@ -53,7 +55,6 @@ const App = ({match: {params: {groupId}}}) => {
 
             <ViewMembersModal 
               currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openViewMembersModal} onClose={setOpenViewMembersModal}/>
-            />
             </AppLayout>
 
         )

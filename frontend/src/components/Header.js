@@ -9,14 +9,15 @@ const Root = styled.div`
     padding-left: 30px;
 `
 
-export default ({ groupName, groupMembers, open, onClose }) => (
+export default ({ admin, groupName, groupMembers, openAdd, closeAdd, openCheck, closeCheck }) => (
     <Root>
         <Header>
         <div style={{fontSize: '14px'}}>
 
-        <Button onClick={()=> onClose(!open)} compact style={{paddingRight: '5px!important', background: 'none'}} size='small' icon='plus' />
+         { admin && <Button onClick={()=> closeAdd(!openAdd)} compact style={{paddingRight: '5px!important', background: 'none'}} size='small' icon='plus'/> 
+         }
 
-         <Button onClick={()=> onClose(!open)} compact style={{paddingRight: '5px!important', background: 'none'}} size='small' content={groupMembers.length} icon='user outline' />
+         <Button onClick={()=> closeCheck(!openCheck)} compact style={{paddingRight: '5px!important', background: 'none'}} size='small' content={groupMembers.length} icon='user outline' />
          #{groupName}
 
         
