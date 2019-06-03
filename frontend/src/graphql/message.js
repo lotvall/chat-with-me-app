@@ -6,6 +6,7 @@ export const MESSAGES_QUERY = gql`
             messages {
                 text
                 id
+                url
                 filetype
                 created_at
                 user {

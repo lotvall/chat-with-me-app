@@ -10,6 +10,19 @@ import { MESSAGES_QUERY, MESSAGES_SUBSCRIPTION } from '../graphql/message'
 
 const Message = ({ url, text, filetype }) => {
 
+    if (url) {
+        console.log(url)
+        if (filetype.startsWith('image')) {
+            return <div><img src={`${url}`} /></div>
+        } else if (filetype === 'text/plain') {
+            // return <RenderTextFile url ={url}/>
+        } else if (filetype.startsWith('audio')) {
+            return <div><audio controls>
+                <source src={url} type={filetype} />
+            </audio> </div>
+        }
+    }
+
     return <Comment.Text>{text}</Comment.Text>
 
 }
