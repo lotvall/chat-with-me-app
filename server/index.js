@@ -1,4 +1,8 @@
-import { ApolloServer }  from 'apollo-server'
+import { ApolloServer }  from 'apollo-server-express'
+import express from 'express'
+import http from 'http'
+
+
 import path from 'path';
 import dotenv from 'dotenv'
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
@@ -7,6 +11,11 @@ import jwt from 'jsonwebtoken'
 import { refreshTokens } from './helpers/auth'
 
 dotenv.config()
+
+const app = express();
+
+app.use('/uploads', express.static('uploads'))
+
 
 const SECRET = process.env.SECRET1
 const SECRET2= process.env.SECRET2
@@ -77,10 +86,21 @@ const server = new ApolloServer({ typeDefs, resolvers,
   }
 });
 
+server.applyMiddleware({ app })
+
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
 const PORT = 8080
 // { force: true }
+// models.sequelize.sync().then(function () {
+//   httpServer.listen(PORT).then(({ url }) => {
+//     console.log(`🚀  Server ready at ${url}`);
+//   }); 
+// });
 models.sequelize.sync().then(function () {
-  server.listen(PORT).then(({ url }) => {
-    console.log(`🚀  Server ready at ${url}`);
-  }); 
-});
+  httpServer.listen(PORT, () => {
+    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+    console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`)
+    }); 
+  });
