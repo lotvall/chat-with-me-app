@@ -27,7 +27,8 @@ const SendMessage = ({
                         <Button icon>
                             <Icon name='plus' />
                         </Button>
-                    </FileUpload>      
+                    </FileUpload> 
+                        
             
             <Input
                 onKeyDown={async (e) => {

@@ -182,7 +182,6 @@ const MessageContainer = ({ groupName, groupId }) => {
                                 groupId={groupId}
                             />
                             <Comment.Group>
-
                                 {[...messages].reverse().map(message)}
                             </Comment.Group>
 

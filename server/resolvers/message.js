@@ -1,6 +1,7 @@
 import { requiresAuth } from '../helpers/permission'
 import { PubSub, withFilter } from 'apollo-server'
 import storeFS from '../helpers/storeFS'
+import shortid from 'shortid'
 
 const NEW_GROUP_MESSAGE = "NEW_GROUP_MESSAGE"
 
@@ -77,11 +78,14 @@ export default {
             if (file) {
 
                 const { createReadStream, filename, mimetype, encoding } = await file
+                const id = shortid.generate()
+                const url = `${id}-${filename}`
+                console.log(url)
                 messageData.filetype = mimetype
-                messageData.url = filename
+                messageData.url = url
                 const stream = createReadStream()
                 console.log(messageData)
-                storeFS(stream, filename)   
+                storeFS(stream, url)   
             }
             const message = await models.Message.create({
                 ...messageData,

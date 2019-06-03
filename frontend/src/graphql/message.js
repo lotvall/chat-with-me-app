@@ -31,6 +31,7 @@ export const MESSAGES_SUBSCRIPTION = gql`
                 username
             }
             text
+            url
             created_at
             filetype
         }
