@@ -99,7 +99,7 @@ const Login = ({history}) => {
                 </Segment>
               </Form>
               <Message>
-                New to Chat With Me? <a href="#root">Sign Up</a>
+                New to Chat With Me? <a href="http://localhost:3000/register">Sign Up</a>
               </Message>
 
               {

@@ -36,7 +36,11 @@ const AddGroupModal = ({ open, onClose, userId }) => {
         const data = cache.readQuery({ query: USER_QUERY });
 
         console.log(createGroup.group)
-        data.getUser.groups.push(createGroup.group)
+        const newGroup = {
+          ...createGroup.group,
+          admin: true
+        }
+        data.getUser.groups.push(newGroup)
 
         cache.writeQuery({
           query: USER_QUERY,

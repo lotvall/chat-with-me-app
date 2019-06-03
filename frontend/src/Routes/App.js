@@ -8,8 +8,9 @@ import { Query } from 'react-apollo'
 import { USER_QUERY } from '../graphql/user'
 import GroupMembersModal from '../components/GroupMembersModal'
 import ViewMembersModal from '../components/ViewMembersModal';
+import {withRouter} from 'react-router-dom'
 
-const App = ({match: {params: {groupId}}}) => {
+const App = ({match: {params: {groupId}}, history}) => {
 
   const [openGroupMemeberModal, setOpenGroupMemeberModal] = useState(false)
   const [openViewMembersModal, setOpenViewMembersModal] = useState(false)
@@ -27,7 +28,7 @@ const App = ({match: {params: {groupId}}}) => {
         }
 
         if (data) {
-          console.log(data) 
+          console.log(data.getUser.groups) 
         }
 
         const {groups, username, id } = data.getUser
@@ -35,8 +36,13 @@ const App = ({match: {params: {groupId}}}) => {
         const selectedGroup = groups.find(g => {
           return g.id === parseInt(groupId, 10)
         })
+
+        const hasGroups = data.getUser.groups.length === 0 ? false : true
         const userId = id 
 
+        if(hasGroups && !selectedGroup) {
+          history.push(`/app/${groups[0].id}`)
+        }
 
         console.log(selectedGroup)       
         return (
@@ -44,17 +50,18 @@ const App = ({match: {params: {groupId}}}) => {
 
           <AppLayout>
             <Sidebar groups={groups} username={username} userId={userId} />
-            <Header admin={selectedGroup.admin} groupName={selectedGroup.name} groupMembers={selectedGroup.members}  
+            {hasGroups && <Header admin={selectedGroup.admin} groupName={selectedGroup.name} groupMembers={selectedGroup.members}  
               openAdd={openGroupMemeberModal} closeAdd={setOpenGroupMemeberModal}
               
               openCheck={openViewMembersModal} closeCheck={setOpenViewMembersModal}
 
-            />
-            <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>
-            <GroupMembersModal currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}/>
+            /> }
+            {hasGroups && <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>}
+            {hasGroups && <GroupMembersModal currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}/> }
 
-            <ViewMembersModal 
-              currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openViewMembersModal} onClose={setOpenViewMembersModal}/>
+            {hasGroups && <ViewMembersModal 
+              currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openViewMembersModal} onClose={setOpenViewMembersModal}/> }
+
             </AppLayout>
 
         )
@@ -65,4 +72,4 @@ const App = ({match: {params: {groupId}}}) => {
 
 }
 
-export default (App)
+export default withRouter(App)
