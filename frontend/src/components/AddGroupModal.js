@@ -4,8 +4,9 @@ import { Mutation } from 'react-apollo';
 import { CREATE_GROUP } from '../graphql/groups'
 import { USER_QUERY } from '../graphql/user'
 import SelectMultiUsers from './SelectMultiUsers'
+import { withRouter } from 'react-router-dom'
 
-const AddGroupModal = ({ open, onClose, userId }) => {
+const AddGroupModal = ({ open, onClose, userId, history }) => {
 
   const [groupName, setGroupName] = useState("")
   const [publicGroup, setPublicGroup] = useState(true)
@@ -46,6 +47,8 @@ const AddGroupModal = ({ open, onClose, userId }) => {
           query: USER_QUERY,
           data
         });
+
+        history.push(`/app/${newGroup.id}`)
       }}
 
     >
@@ -99,4 +102,4 @@ const AddGroupModal = ({ open, onClose, userId }) => {
   )
 }
 
-export default AddGroupModal
+export default withRouter(AddGroupModal)
