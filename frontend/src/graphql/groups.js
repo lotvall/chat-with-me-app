@@ -87,7 +87,6 @@ query ($groupId: Int!){
   getGroupMembers(groupId: $groupId) {
     id
     username
-    
   }
 }
 `

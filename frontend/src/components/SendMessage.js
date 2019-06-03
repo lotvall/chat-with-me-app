@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo'
 import styled from 'styled-components'
 import { Input, Button, Icon } from 'semantic-ui-react'
 import { CREATE_MESSAGE } from '../graphql/message'
+import FileUpload from './FileUpload'
 
 const Root = styled.div`
     grid-column: 3;
@@ -21,10 +22,13 @@ const SendMessage = ({
     return (
         <Mutation mutation={CREATE_MESSAGE}>
       {(createMessage) => (
-        <Root>        
-            <Button icon>
-                <Icon name='plus' />
-            </Button>
+        <Root>  
+                    <FileUpload groupId={groupId}>
+                        <Button icon>
+                            <Icon name='plus' />
+                        </Button>
+                    </FileUpload>      
+            
             <Input
                 onKeyDown={async (e) => {
                     console.log(e.keyCode)

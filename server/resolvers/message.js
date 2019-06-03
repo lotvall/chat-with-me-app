@@ -1,5 +1,6 @@
 import { requiresAuth } from '../helpers/permission'
 import { PubSub, withFilter } from 'apollo-server'
+import storeFS from '../helpers/storeFS'
 
 const NEW_GROUP_MESSAGE = "NEW_GROUP_MESSAGE"
 
@@ -55,7 +56,6 @@ export default {
                 }
             }
             
-            // problemet har
             return {
                 cursor: '' + messages[messages.length-1].createdAt,
                 messages: messages.map(message => {
@@ -72,13 +72,16 @@ export default {
         createMessage: requiresAuth.createResolver(async (parent, { file , ...args }, { models, user }) => {
           try {
             const messageData = args
+            console.log(messageData)
+
             if (file) {
 
                 const { createReadStream, filename, mimetype, encoding } = await file
                 messageData.filetype = mimetype
                 messageData.url = filename
                 const stream = createReadStream()
-                //storeFS(stream, filename)   
+                console.log(messageData)
+                storeFS(stream, filename)   
             }
             const message = await models.Message.create({
                 ...messageData,
