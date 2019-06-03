@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon } from 'semantic-ui-react'
+import { Icon, Button } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
 const GroupWrapper = styled.div`
@@ -47,17 +47,17 @@ const group = ({ id, name, public_group }) => <Link style={{color: '#b5d6ff'}} t
 export default ({groups, username, notifications, openCreateGroupModal, setOpenCreateGroupModal, openJoinGroupModal, setOpenJoinGroupModal, openHandleGroupInvitesModal, setOpenHandleGroupInvitesModal}) => (
   <GroupWrapper>
     <div>
-      <TeamNameHeader><PushLeft>{username }  
+      <TeamNameHeader><PushLeft>{ username }  
       
       <Icon.Group style={{paddingLeft: '5px'}}>
-        <Icon name="bell" size="small" onClick={() => setOpenHandleGroupInvitesModal(!openHandleGroupInvitesModal)}/>
-        {notifications && <Icon name="circle" corner='top right' color="red"/>}
+        <Icon style={{cursor:'pointer'}} name="bell" size="small" onClick={() => setOpenHandleGroupInvitesModal(!openHandleGroupInvitesModal)}/>
+        { notifications && <Icon name="circle" corner='top right' color="red"/>}
       </Icon.Group>
       
       
       </PushLeft></TeamNameHeader>
       <SideBarList>
-        <SideBarListHeader><PushLeft>Groups  <Icon onClick={() => setOpenCreateGroupModal(!openCreateGroupModal)} name="add circle"/> <Icon onClick={() => setOpenJoinGroupModal(!openJoinGroupModal)} name="search"/> </PushLeft></SideBarListHeader> 
+        <SideBarListHeader><PushLeft>Groups  <Icon style={{cursor:'pointer'}} onClick={() => setOpenCreateGroupModal(!openCreateGroupModal)} name="add circle"/> <Icon style={{cursor:'pointer'}} onClick={() => setOpenJoinGroupModal(!openJoinGroupModal)} name="search"/> </PushLeft></SideBarListHeader> 
         {groups.map(g => group(g))}
       </SideBarList>
     </div>

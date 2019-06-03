@@ -4,6 +4,8 @@ import { Comment } from 'semantic-ui-react'
 import moment from 'moment'
 import SendMessage from '../components/SendMessage'
 import { MESSAGES_QUERY, MESSAGES_SUBSCRIPTION } from '../graphql/message'
+import FileUpload from '../components/FileUpload'
+import RenderTextFile from '../components/RenderTextFile'
 
 
 
@@ -15,7 +17,7 @@ const Message = ({ url, text, filetype }) => {
         if (filetype.startsWith('image')) {
             return <div><img src={`${url}`} /></div>
         } else if (filetype === 'text/plain') {
-            // return <RenderTextFile url ={url}/>
+             return <RenderTextFile url ={url}/>
         } else if (filetype.startsWith('audio')) {
             return <div><audio controls>
                 <source src={url} type={filetype} />
@@ -67,10 +69,6 @@ const MessageContainer = ({ groupName, groupId }) => {
                     }
                     if (error) console.log(error)
                     if (data) console.log('data', data)
-
-                    // this doesnt run sometimes when the messages array is empty
-                    // removing fetchPolicy={"network-only"} fixed this for now
-                    // think this will have problems once we have any users and many groups
 
                     if (!unsubscribe) {
                         unsubscribe = subscribeToMore({
@@ -161,6 +159,7 @@ const MessageContainer = ({ groupName, groupId }) => {
                     }
 
                     return (
+
                         <div
                             style={{
                                 gridColumn: 3,
@@ -181,12 +180,16 @@ const MessageContainer = ({ groupName, groupId }) => {
                                 groupName={groupName}
                                 groupId={groupId}
                             />
-                            <Comment.Group>
-                                {[...messages].reverse().map(message)}
-                            </Comment.Group>
+                            <FileUpload noClick groupId={groupId}>
+
+                                <Comment.Group>
+                                    {[...messages].reverse().map(message)}
+                                </Comment.Group>
+                            </FileUpload>
 
 
                         </div>
+                     
                     )
                 }
             }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import backgroundPhoto from '../static/images/backgroundPhoto3.jpg'
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -8,37 +9,36 @@ import "./LandingPage.css";
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Segment inverted vertical textAlign="center">
-          <Container as="nav">
-            <Header inverted as="h1">
-              Chat with me
-            </Header>
-            <Menu borderless compact inverted>
-              <Menu.Item active>Home</Menu.Item>
-              <Menu.Item>Feature</Menu.Item>
-              <Menu.Item>Contact</Menu.Item>
-            </Menu>
-          </Container>
-          <Container className="content">
-            <Header inverted as="h1">
-              Chat with me.
-            </Header>
-            <Button onClick={()=> {
-              this.props.history.push('/register')
+      <div className="App" >
+          <Segment inverted vertical textAlign="center" style={{
+        backgroundImage: 'url(' + backgroundPhoto + ')',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#000000',    
+        opacity: '0.8',
+        width: '100%'
+        
+      }}>
+  
+            <Container className="content"
               
-            }} size="large">Register</Button>
-            <Button onClick={()=> {
-              this.props.history.push('/login')
-              
-            }} size="large">Login</Button>
-          </Container>
-          <Segment inverted vertical as="footer">
-            An application by Alexander Lötvall
+            >
+              <Header inverted as="h1">
+                Chat with me.
+            </Header>
+              <Button onClick={() => {
+                this.props.history.push('/register')
+
+              }} size="large">Register</Button>
+              <Button onClick={() => {
+                this.props.history.push('/login')
+
+              }} size="large">Login</Button>
+            </Container>
           </Segment>
-        </Segment>
-      </div>
-    );
+        </div>    
+        );
   }
 }
 
