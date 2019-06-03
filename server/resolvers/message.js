@@ -54,7 +54,8 @@ export default {
                     messages: []
                 }
             }
-
+            
+            // problemet har
             return {
                 cursor: '' + messages[messages.length-1].createdAt,
                 messages: messages.map(message => {

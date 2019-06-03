@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Query } from 'react-apollo';
 import { Comment } from 'semantic-ui-react'
 import moment from 'moment'
@@ -34,17 +34,21 @@ const message = ({ id, text, user, created_at, url, filetype }) => (
 
 
 const MessageContainer = ({ groupName, groupId }) => {
-    console.log(groupId,'from groupid')
+
+    const [hasMoreMessages, setHasMoreMessages] = useState(true)
+
+    
+    
 
     let unsubscribe = null;
     return (
         <Query
             query={MESSAGES_QUERY}
             variables={{ groupId: parseInt(groupId, 10), cursor: null }}
-            
+
         >
             {
-                ({ loading, error, data, subscribeToMore}) => {
+                ({ loading, error, data, subscribeToMore, fetchMore }) => {
                     if (loading || !data) {
                         return null
                     }
@@ -55,45 +59,94 @@ const MessageContainer = ({ groupName, groupId }) => {
                     // removing fetchPolicy={"network-only"} fixed this for now
                     // think this will have problems once we have any users and many groups
 
-                    if(!unsubscribe) {
+                    if (!unsubscribe) {
                         unsubscribe = subscribeToMore({
-                                    document: MESSAGES_SUBSCRIPTION,
-                                    variables: { groupId: parseInt(groupId, 10) },
-                                    fetchPolicy: 'network-only',
-                                    updateQuery: (prev, { subscriptionData }) => {
-                                        if (!subscriptionData.data) return prev;
+                            document: MESSAGES_SUBSCRIPTION,
+                            variables: { groupId: parseInt(groupId, 10) },
+                            fetchPolicy: 'network-only',
+                            updateQuery: (prev, { subscriptionData }) => {
+                                if (!subscriptionData.data) return prev;
 
-                                        // Test to see if item is already in the store
-                                        const idAlreadyExists =
-                                            prev.messages.messages.filter(item => {
-                                                return item.id === subscriptionData.data.newGroupMessage.id;
-                                            }).length > 0;
+                                // Test to see if item is already in the store
+                                const idAlreadyExists =
+                                    prev.messages.messages.filter(item => {
+                                        return item.id === subscriptionData.data.newGroupMessage.id;
+                                    }).length > 0;
 
-                                        // Only add it if it isn't already there
-                                        if (!idAlreadyExists) {
+                                // Only add it if it isn't already there
+                                if (!idAlreadyExists) {
 
-                                            const newData = {
-                                                ...prev,
-                                                messages: {
-                                                    cursor,
-                                                    messages: [subscriptionData.data.newGroupMessage, ...prev.messages.messages],
-                                                    __typename: "MessagesResponse"
+                                    const newData = {
+                                        ...prev,
+                                        messages: {
+                                            cursor,
+                                            messages: [subscriptionData.data.newGroupMessage, ...prev.messages.messages],
+                                            __typename: "MessagesResponse"
 
-                                                }
-                                            }
-                                            console.log(newData)
-                                            return newData
                                         }
-                                    },
-                                    onError: err => console.error(err),
-                                })
+                                    }
+                                    console.log(newData)
+                                    return newData
+                                }
+                            },
+                            onError: err => console.error(err),
+                        })
                     }
 
                     const messages = data.messages ? data.messages.messages : []
                     const cursor = data.messages ? data.messages.cursor : null
+                    console.log(cursor)
+                    let scrolling = null
 
-                    console.log('is this running?', messages, groupName, groupId)
                     
+
+                    const handleScroll = () => {
+                        console.log(cursor)
+                        if (
+                            scrolling &&
+                            scrolling.scrollTop < 100 &&
+                            hasMoreMessages &&
+                            messages.length >= 35 &&
+                            messages.length < 1000 && // prevent infinite loop
+                            !!cursor
+                        ) {
+
+                            fetchMore({
+                                variables: {
+                                    groupId: parseInt(groupId, 10),
+                                    cursor,
+                                },
+                                updateQuery: (previousResult, { fetchMoreResult }) => {
+                                    console.log(previousResult)
+                                    console.log(fetchMoreResult)
+                                    console.log(messages[messages.length - 1].created_at)
+                                    if (!fetchMoreResult) {
+                                        return previousResult;
+                                    }
+
+                                    if (fetchMoreResult.messages.length < 35) {
+                                        setHasMoreMessages( false);
+                                    }
+
+                                    console.log(previousResult.messages)
+                                    const newResult = {
+                                        messages: {
+                                            ...previousResult,
+                                            cursor: fetchMoreResult.messages.cursor,
+                                            messages: [...previousResult.messages.messages, ...fetchMoreResult.messages.messages.filter(message => !previousResult.messages.messages.some(PrevMessage => message.id === PrevMessage.id))],
+                                            __typename: "MessagesResponse"
+                                        }
+                                        
+                                    }
+                                    console.log(newResult)
+
+
+                                    return newResult
+                                },
+                            });
+                        }
+                    }
+
                     return (
                         <div
                             style={{
@@ -105,6 +158,10 @@ const MessageContainer = ({ groupName, groupId }) => {
                                 flexDirection: 'column-reverse',
                                 overflowY: 'auto',
                             }}
+                            onScroll={handleScroll}
+                            ref={scroller => {
+                                scrolling = scroller
+                            }}
 
                         >
                             <SendMessage
@@ -112,9 +169,10 @@ const MessageContainer = ({ groupName, groupId }) => {
                                 groupId={groupId}
                             />
                             <Comment.Group>
+
                                 {[...messages].reverse().map(message)}
                             </Comment.Group>
-                            
+
 
                         </div>
                     )
