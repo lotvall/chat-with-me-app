@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import logo from '../static/images/logo.png'
+import { wsLink } from '../index'
 
 import {
   Button,
@@ -42,6 +43,7 @@ const Login = ({history}) => {
     if (ok) {
       localStorage.setItem('token', token)
       localStorage.setItem('refreshToken', refreshToken)
+      wsLink.subscriptionClient.tryReconnect()
       history.push('/app')
 
     } else {

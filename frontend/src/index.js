@@ -27,10 +27,11 @@ const addTokenMiddleware = setContext(() => ({
 const linkWithTokens = addTokenMiddleware.concat(httpLink)
 
 
-const wsLink = new WebSocketLink({
+export const wsLink = new WebSocketLink({
   uri: `ws://localhost:8080/graphql`,
   options: {
     reconnect: true,
+    lazy: true,
     connectionParams: {
       token: localStorage.getItem('token'),
       refreshtoken: localStorage.getItem('refreshToken'),
