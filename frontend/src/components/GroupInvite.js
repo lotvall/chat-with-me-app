@@ -21,14 +21,27 @@ const GroupInvite = ({ group, inviter }) => {
         // add to grouplist
         if (handleGroupInvite.group) {
           const groupData = cache.readQuery({ query: USER_QUERY });
+
+          console.log(groupData)
+          console.log(handleGroupInvite.group)
+          
           groupData.getUser.groups.push(handleGroupInvite.group)
+          
+          console.log(groupData)
+
+          // relevant group is not in groupData
 
           cache.writeQuery({
             query: USER_QUERY,
             data: groupData
           });
         }
-        // remove from groupInvites
+        // missing field members
+        // missing field admin
+        // missing field public_group
+        // cannot read property groups of undefined ->
+        // console.log(data.getUser.groups) 
+        // query returns completely empty ??? data is empty
 
         const inviteData = cache.readQuery({ query: GET_GROUP_INVITES });
 

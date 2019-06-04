@@ -25,7 +25,7 @@ export default {
             // problem med admin har
             console.log('problem med admin field tag1', user)
             const groups = await models.sequelize.query(
-                'SELECT * FROM GROUPS JOIN members AS MEMBER ON groups.id = member.group_id WHERE member.user_id = ?',
+                'SELECT * FROM GROUPS JOIN members AS MEMBER ON groups.id = member.group_id WHERE member.user_id = ? AND member.active = true',
                 {
                 replacements: [user.id],
                 model: models.Group,

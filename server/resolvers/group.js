@@ -104,7 +104,7 @@ export default {
                 throw new Error('You are already a member of this group')
             }
             try {
-                await models.Member.create({ groupId: group.id, userId: user.id, admin: false, active: false, inviter: null });
+                await models.Member.create({ groupId: group.id, userId: user.id, admin: false, active: true, inviter: null });
 
                 return {
                     ok: true,
@@ -216,8 +216,11 @@ export default {
                     const group = await models.Group.findOne({where: { id: groupId }})
                     return {
                         ok: true,
-                        group: group
-                    } 
+                        group: {
+                            ...group.dataValues,
+                            public_group: group.dataValues.publicGroup
+                        }
+                    }
                     
                 } catch(error) {
                     return {

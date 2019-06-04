@@ -3,8 +3,9 @@ import { Dropdown, Form, Icon, Button, Modal } from 'semantic-ui-react'
 import { Mutation, Query } from 'react-apollo';
 import { JOIN_PUBLIC_GROUP, PUBLIC_GROUP_QUERY } from '../graphql/groups'
 import { USER_QUERY } from '../graphql/user'
+import { withRouter } from 'react-router-dom'
 
-const JoinPublicGroupModal = ({ open, onClose, userId }) => {
+const JoinPublicGroupModal = ({ open, onClose, userId , history}) => {
 
   const [groupId, setGroupId] = useState(-1)
 
@@ -26,6 +27,7 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
               mutation={JOIN_PUBLIC_GROUP}
               update={(cache, { data: { joinPublicGroup } }) => {
                 const data = cache.readQuery({ query: USER_QUERY });
+
                 data.getUser.groups.push(joinPublicGroup.group)
 
                 cache.writeQuery({
@@ -41,6 +43,7 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
                   query: PUBLIC_GROUP_QUERY,
                   data:newPublicGroupData
                 })
+                
               }}
 
             >
@@ -89,4 +92,4 @@ const JoinPublicGroupModal = ({ open, onClose, userId }) => {
   )
 }
 
-export default JoinPublicGroupModal
+export default withRouter(JoinPublicGroupModal)

@@ -28,7 +28,7 @@ const App = ({match: {params: {groupId}}, history}) => {
         }
 
         if (data) {
-          console.log(data.getUser.groups) 
+          console.log(data) 
         }
 
         const {groups, username, id } = data.getUser
@@ -37,12 +37,7 @@ const App = ({match: {params: {groupId}}, history}) => {
           return g.id === parseInt(groupId, 10)
         })
 
-        const hasGroups = data.getUser.groups.length === 0 ? false : true
         const userId = id 
-
-        if(hasGroups && !selectedGroup) {
-          history.push(`/app/${groups[0].id}`)
-        }
 
         console.log(selectedGroup)       
         return (
@@ -50,16 +45,16 @@ const App = ({match: {params: {groupId}}, history}) => {
 
           <AppLayout>
             <Sidebar groups={groups} username={username} userId={userId} />
-            {hasGroups && <Header admin={selectedGroup.admin} groupName={selectedGroup.name} groupMembers={selectedGroup.members}  
+            {selectedGroup && <Header admin={selectedGroup.admin} groupName={selectedGroup.name} groupMembers={selectedGroup.members}  
               openAdd={openGroupMemeberModal} closeAdd={setOpenGroupMemeberModal}
               
               openCheck={openViewMembersModal} closeCheck={setOpenViewMembersModal}
 
             /> }
-            {hasGroups && <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>}
-            {hasGroups && <GroupMembersModal currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}/> }
+            {selectedGroup && <MessageContainer groupName={selectedGroup.name} groupId={groupId}/>}
+            {selectedGroup && <GroupMembersModal currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openGroupMemeberModal} onClose={setOpenGroupMemeberModal}/> }
 
-            {hasGroups && <ViewMembersModal 
+            {selectedGroup && <ViewMembersModal 
               currentMembers={selectedGroup.members} userId={userId} groupId={selectedGroup.id} groupName={selectedGroup.name} open={openViewMembersModal} onClose={setOpenViewMembersModal}/> }
 
             </AppLayout>
