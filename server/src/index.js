@@ -52,6 +52,7 @@ const server = new ApolloServer({ typeDefs, resolvers,
     } 
   },
   context: async ({ req, connection }) => {
+    console.log('is req here beginning of context', 'what about now') //first no, then true
 
     connection ? 
       console.log('is the user here connection', connection.context.user) : 
@@ -63,25 +64,34 @@ const server = new ApolloServer({ typeDefs, resolvers,
         if (token && refreshtoken) {
           try { 
             const { user } = await jwt.verify(token, SECRET)
-            return { models, user, SECRET, SECRET2, }
+            console.log('is req here try', !!req) // true
+            console.log('TESTING', req.protocol + '://' + req.get('host'))
+
+
+            return { models, user, SECRET, SECRET2, serverUrl:`${req.protocol}://${req.get('host')}`
+          }
           } catch (err) {
             
             // refreshToken not defined, needs to be refreshtoken
+
+            console.log('is req here catch', !!req)
           
             const { user } = await refreshTokens(token, refreshtoken, models, SECRET, SECRET2);
   
-            return { models, user, SECRET, SECRET2, }
+            return { models, user, SECRET, SECRET2}
           }
         }
 
       }
+      // console.log('TESTING', req.protocol + '://' + req.get('host'))
+      // console.log('is req here last return', !!req)
 
     return {
       models,
       user: connection ? connection.context.user : req.user,
       SECRET,
       SECRET2,
-      serverUrl: req.protocol + '://' + req.get('host')
+
     }
     
   }
