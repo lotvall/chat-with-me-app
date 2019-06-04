@@ -1,7 +1,10 @@
 {
   "presets": [
-    "env",
-    "stage-3"
+    ["env", {
+      "targets": {
+        "node": "10.15.0"
+      }
+    }]
   ],
-  "plugins": ["transform-runtime"]
+  "plugins": ["babel-plugin-transform-object-rest-spread"]
 }
