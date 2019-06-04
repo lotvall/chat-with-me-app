@@ -81,6 +81,7 @@ const server = new ApolloServer({ typeDefs, resolvers,
       user: connection ? connection.context.user : req.user,
       SECRET,
       SECRET2,
+      serverUrl: req.protocol + '://' + req.get('host')
     }
     
   }
