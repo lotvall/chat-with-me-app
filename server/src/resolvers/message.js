@@ -1,11 +1,10 @@
 import { requiresAuth } from '../helpers/permission'
-import { PubSub, withFilter } from 'apollo-server'
+import { withFilter } from 'apollo-server'
 import storeFS from '../helpers/storeFS'
 import shortid from 'shortid'
+import pubsub from '../pubsub'
 
 const NEW_GROUP_MESSAGE = "NEW_GROUP_MESSAGE"
-
-const pubsub = new PubSub()
 
 export default {
     
