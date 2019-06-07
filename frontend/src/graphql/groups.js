@@ -38,6 +38,10 @@ export const JOIN_PUBLIC_GROUP = gql`
                 public_group
                 id
                 admin
+                members{
+                  username
+                  id
+                }
             }
         }
     }
