@@ -1,16 +1,38 @@
 import Sequelize from 'sequelize'
 
-const sequelize = new Sequelize('chat_with_me', 'postgres', 'postgres', {
-  dialect: 'postgres',
-  operatorsAliases: Sequelize.Op,
-  host: process.env.DB_HOST || 'localhost',
-  define: {
-    underscored: true,
-  },
-})
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+export default async () => {
+  let maxReconnects = 20;
+  let connected = false;
 
-const models = {
+  const sequelize = new Sequelize('chat_with_me', 'postgres', 'postgres', {
+    dialect: 'postgres',
+    operatorsAliases: Sequelize.Op,
+    host: process.env.DB_HOST || 'localhost',
+    define: {
+      underscored: true,
+    },
+  })
+
+  while (!connected && maxReconnects) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      await sequelize.authenticate();
+      connected = true;
+    } catch (err) {
+      console.log('reconnecting in 5 seconds');
+      // eslint-disable-next-line no-await-in-loop
+      await sleep(5000);
+      maxReconnects -= 1;
+    }
+  }
+
+  if (!connected) {
+    return null;
+  }
+
+  const models = {
     User: sequelize['import']('./user'),
     Group: sequelize['import']('./group'),
     Message: sequelize['import']('./message'),
@@ -27,4 +49,9 @@ models.sequelize = sequelize;
 models.Sequelize = Sequelize;
 models.op = Sequelize.Op
 
-export default models
+return models
+
+}
+
+
+

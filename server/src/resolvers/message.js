@@ -10,7 +10,7 @@ export default {
     
     Message: {
         url: (parent, args, {serverUrl}) => {
-            return parent.url ? `${serverUrl}/uploads/${parent.url}` : parent.url
+            return parent.url ? `${process.env.SERVER_URL || 'http://localhost:8080'}/uploads/${parent.url}` : parent.url
         },
         user: ({ user, userId }, args, { models }) => {
             if(user) return user
