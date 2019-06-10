@@ -37,7 +37,6 @@ const Register = ({history}) => {
   const [errors, setErrors] = useState({})
 
   const onSubmit = async (registerUser) => {
-    console.log(username, password)
     const response = await registerUser({ variables: { username, password } })
 
     const { ok, errors } = response.data.registerUser
@@ -74,7 +73,7 @@ const Register = ({history}) => {
       <Grid textAlign="center" verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h2" color="blue" textAlign="center">
-            <img src={logo} className="image" />{" "}
+            <img alt="" src={logo} className="image" />{" "}
             Register your account
           </Header>
           <Form size="large">

@@ -73,7 +73,7 @@ const Login = ({history}) => {
           <Grid textAlign="center" verticalAlign="middle">
             <Grid.Column style={{ maxWidth: 450 }}>
               <Header as="h2" color="blue" textAlign="center">
-                <img src={logo} className="image" />
+                <img alt="" src={logo} className="image" />
                 Log-in to your account
             </Header>
               <Form size="large">

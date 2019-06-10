@@ -3,7 +3,7 @@ import backgroundPhoto from '../static/images/backgroundPhoto3.jpg'
 
 import "semantic-ui-css/semantic.min.css";
 
-import { Button, Container, Header, Menu, Segment } from "semantic-ui-react";
+import { Button, Container, Header, Segment } from "semantic-ui-react";
 import "./LandingPage.css";
 
 class App extends Component {

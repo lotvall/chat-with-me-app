@@ -15,9 +15,6 @@ const Sidebar = ({groups, username, userId}) => {
 
   const [notifications, setNotifications] = useState(false)
 
-  console.log(userId)
-
-
     return (
                                 <>
                                     <Groups 

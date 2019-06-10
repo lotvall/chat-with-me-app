@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Header, Icon, Button, Label } from 'semantic-ui-react'
+import { Header, Button } from 'semantic-ui-react'
 
 const Root = styled.div`
     grid-column: 3;

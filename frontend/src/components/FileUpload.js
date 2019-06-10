@@ -13,9 +13,7 @@ const FileUpload = ({ children, noClick, groupId }) => (
   <Mutation mutation={createFileMessageMutation}>
     {mutate => (
       <Dropzone noClick={noClick} noKeyboard onDrop={async ([file]) =>  {
-        console.log(file)
         const response = await mutate({ variables: { groupId: parseInt(groupId, 10), file } })
-        console.log(response)
         return response
 
         }

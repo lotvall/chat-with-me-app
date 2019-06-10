@@ -10,7 +10,6 @@ const HandleGroupInvitesModal = ({ open, onClose, handleNotification }) => {
 
     <Query query={GET_GROUP_INVITES}>
       {({ loading, data: { getPendingGroupInvites = [] }, error }) => {
-        console.log(getPendingGroupInvites)
         if(getPendingGroupInvites.length > 0) {
           handleNotification(true)
 

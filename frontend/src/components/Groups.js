@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, Button } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
 const GroupWrapper = styled.div`
@@ -37,10 +37,6 @@ const SideBarListItem = styled.li`
 const SideBarListHeader = styled.li`padding: 2px;  margin-bottom: 1em`;
 
 const PushLeft = styled.div`padding-left: 30px;`;
-
-const Green = styled.span`color: #38978d;`;
-
-const Bubble = ({ on = true }) => (on ? <Green>●</Green> : '○');
 
 const group = ({ id, name, public_group }) => <Link style={{color: '#b5d6ff'}} to={`/app/${id}`} key={`group-${id}`}><SideBarListItem><PushLeft>{public_group ? <Icon name="globe" /> : <Icon name="lock" />} {name}</PushLeft></SideBarListItem></Link>
 

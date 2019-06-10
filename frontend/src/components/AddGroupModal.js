@@ -24,7 +24,7 @@ const AddGroupModal = ({ open, onClose, userId, history }) => {
       publicGroup,
       members: groupMembers
     }
-    const response = await createGroup({ variables: { input: GroupInput } })
+    await createGroup({ variables: { input: GroupInput } })
     setGroupName("")
     setPublicGroup(true)
     setGroupMembers([])
@@ -36,7 +36,6 @@ const AddGroupModal = ({ open, onClose, userId, history }) => {
       update={(cache, { data: { createGroup } }) => {
         const data = cache.readQuery({ query: USER_QUERY });
 
-        console.log(createGroup.group)
         const newGroup = {
           ...createGroup.group,
           admin: true

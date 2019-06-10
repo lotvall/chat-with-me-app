@@ -30,7 +30,9 @@ services:
     depends_on:
       - db
       - redis
-    command: ["./wait-for-it.sh", "db:5432", "--", "node", "index.js"]
+    # command: ["./wait-for-it.sh", "db:5432", "--", "node", "index.js"]
+    command: ["node", "index.js"]
+
   nginx:
     image: nginx
     volumes:

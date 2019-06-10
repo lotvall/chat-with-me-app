@@ -55,7 +55,7 @@ export default () => {
                 <Route path='/' exact component={LandingPage}/>
                 <Route path='/login' exact component={Login}/>
                 <Route path='/register' exact component={Register}/>
-                <Route path='/app/:groupId?' exact component={App}/>
+                <PrivateRoute path='/app/:groupId?' exact component={App}/>
             </Switch>
         </BrowserRouter>
     )

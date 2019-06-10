@@ -13,7 +13,7 @@ const JoinPublicGroupModal = ({ open, onClose, userId , history}) => {
     if (groupId < 1) {
       return
     }
-    const response = await joinPublicGroup({ variables: { groupId } })
+    await joinPublicGroup({ variables: { groupId } })
     setGroupId(-1)
     onClose(!open)
   }
@@ -27,19 +27,7 @@ const JoinPublicGroupModal = ({ open, onClose, userId , history}) => {
               mutation={JOIN_PUBLIC_GROUP}
               update={(cache, { data: { joinPublicGroup } }) => {
                 const data = cache.readQuery({ query: USER_QUERY });
-
-
-                console.log('getUser', data.getUser)
-                console.log('data.getUser.groups', data.getUser.groups)
-                console.log('joinPublicGroup.group', joinPublicGroup.group)
-                console.log("ser det annorlunda ut ovan?")
-
-
                 data.getUser.groups.push(joinPublicGroup.group)
-
-                console.log('detta laddas upp i getUser cache', data)
-
-                console.log('joinPublicGroup.group saknar members data')
 
                 cache.writeQuery({
                   query: USER_QUERY,
@@ -53,18 +41,12 @@ const JoinPublicGroupModal = ({ open, onClose, userId , history}) => {
                   getPublicGroups: publicGroupData.getPublicGroups.filter(group => group.id !== joinPublicGroup.group.id)
                   }
 
-                console.log('gamla publicGroupData', publicGroupData)
-                console.log('nya publicGroupData', newPublicGroupData)
-                console.log('ser nagot konstigt ut här?')
-
-                // missing field members 
-
-                //Missing field getPublicGroups in ???
-
                 cache.writeQuery({
                   query: PUBLIC_GROUP_QUERY,
                   data:newPublicGroupData
                 })
+
+                return
                 
               }}
 
@@ -82,13 +64,15 @@ const JoinPublicGroupModal = ({ open, onClose, userId , history}) => {
                           selection
                           value={groupId}
                           onChange={(e, { value }) => setGroupId(value)}
-                          options={getPublicGroups.filter((group) => {
-                            if (group.members.filter(m => m.id === parseInt(userId, 10)).length === 0) {
-                              return group
-                            }
-
-                          })
-                            .map(g => ({ key: g.id, value: g.id, text: g.name }))}
+                          options={
+                            getPublicGroups.filter((group) => {
+                              if (group.members.filter(m => m.id === parseInt(userId, 10)).length === 0) {
+                                return group
+                              }
+                              return null
+                            })
+                            .map(g => ({ key: g.id, value: g.id, text: g.name }))
+                          }
                         />
                       </Form.Field>
                       <Modal.Actions >

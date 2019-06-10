@@ -7,8 +7,6 @@ import SelectMultiUsers from './SelectMultiUsers'
 
 const GroupMembersModal = ({ open, onClose, userId, groupId, groupName }) => {
 
-  console.log(groupId)
-
   const [memberInvites, setMemberInvites] = useState([])
   const [groupMembers, setGroupMembers] = useState([])
 
@@ -22,7 +20,7 @@ const GroupMembersModal = ({ open, onClose, userId, groupId, groupName }) => {
       groupId: parseInt(groupId, 10),
       userIds: memberInvites
     }
-    const response = await inviteToGroup({ variables: { input: MemberInviteInput } })
+    await inviteToGroup({ variables: { input: MemberInviteInput } })
     setMemberInvites([])
     onClose(!open)
   }

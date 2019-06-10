@@ -15,26 +15,7 @@ const App = ({match: {params: {groupId}}, history}) => {
   const [openGroupMemeberModal, setOpenGroupMemeberModal] = useState(false)
   const [openViewMembersModal, setOpenViewMembersModal] = useState(false)
 
-  console.log( 'groupid',groupId)
   return (
-
-    // error here when joining a public group with a new user
-    
-    // Missing field members in {
-  // "name": "a public 2",
-  // "public_group": true,
-  // "id": 10,
-  // "admin": false,
-  // "__typename": "Gro
-
-  // Missing field getPublicGroups in [
-  //   {
-  //     "id": 1,
-  //     "name": "a public group",
-  //     "admin": false,
-  //     "members": [
-  //       {
-
 
     <Query query={USER_QUERY}>{
 
@@ -46,10 +27,6 @@ const App = ({match: {params: {groupId}}, history}) => {
           console.log(error)
         }
 
-        if (data) {
-          console.log(data) 
-        }
-
         const {groups, username, id } = data.getUser
 
         const selectedGroup = groups.find(g => {
@@ -58,7 +35,6 @@ const App = ({match: {params: {groupId}}, history}) => {
 
         const userId = id 
 
-        console.log(selectedGroup)       
         return (
 
 

@@ -8,11 +8,11 @@ import { USER_QUERY } from '../graphql/user'
 const GroupInvite = ({ group, inviter }) => {
 
   const handleAccept = (handleGroupInvite) => {
-    const joined = handleGroupInvite({ variables: { joining: true, groupId: group.id } })
+    handleGroupInvite({ variables: { joining: true, groupId: group.id } })
   }
 
   const handleDecline = (handleGroupInvite) => {
-    const decline = handleGroupInvite({ variables: { joining: false, groupId: group.id } })
+    handleGroupInvite({ variables: { joining: false, groupId: group.id } })
   }
   return (
     <Mutation mutation={HANDLE_GROUP_INVITE}
@@ -22,26 +22,16 @@ const GroupInvite = ({ group, inviter }) => {
         if (handleGroupInvite.group) {
           const groupData = cache.readQuery({ query: USER_QUERY });
 
-          console.log(groupData)
-          console.log(handleGroupInvite.group)
-          
+       
+
           groupData.getUser.groups.push(handleGroupInvite.group)
           
-          console.log(groupData)
-
-          // relevant group is not in groupData
-
           cache.writeQuery({
             query: USER_QUERY,
             data: groupData
           });
         }
-        // missing field members
-        // missing field admin
-        // missing field public_group
-        // cannot read property groups of undefined ->
-        // console.log(data.getUser.groups) 
-        // query returns completely empty ??? data is empty
+
 
         const inviteData = cache.readQuery({ query: GET_GROUP_INVITES });
 

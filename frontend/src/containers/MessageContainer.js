@@ -14,7 +14,7 @@ const Message = ({ url, text, filetype }) => {
 
     if (url) {
         if (filetype.startsWith('image')) {
-            return <div><img src={`${url}`} /></div>
+            return <div><img alt="" src={`${url}`} /></div>
         } else if (filetype === 'text/plain') {
              return <RenderTextFile url ={url}/>
         } else if (filetype.startsWith('audio')) {

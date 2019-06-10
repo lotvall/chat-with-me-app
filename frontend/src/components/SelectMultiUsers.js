@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { Dropdown, Form } from 'semantic-ui-react'
+import React from 'react'
+import { Dropdown } from 'semantic-ui-react'
 import { Query } from 'react-apollo';
 import { ALL_USERS_QUERY } from '../graphql/user'
 
 const SelectMultiUsers = ({ userId, selectedMembers, currentMembers = [], handleChange, placeholder }) => {
-  console.log(userId)
-  console.log(currentMembers)
 
   return (
     <Query query={ALL_USERS_QUERY}>
