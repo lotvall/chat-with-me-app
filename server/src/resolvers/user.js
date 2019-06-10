@@ -8,22 +8,18 @@ export default {
         admin: async (parent, args, {models, user }) => {
             const groupId = parent.id
             const userId = user.id
-            console.log(groupId, 'what the parent')
             const member = await models.Member.findOne({
                 where: { group_id: groupId, user_id: userId}
             })
             if(!member) {
                 return false
             }
-            console.log(member.dataValues)
             const admin = member.dataValues.admin
             return admin
         }
     },
     User: {
         groups: async (parent, args, { models, user }) =>{
-            // problem med admin har
-            console.log('problem med admin field tag1', user)
             const groups = await models.sequelize.query(
                 'SELECT * FROM GROUPS JOIN members AS MEMBER ON groups.id = member.group_id WHERE member.user_id = ? AND member.active = true',
                 {
@@ -32,8 +28,6 @@ export default {
                 raw: true,
                 },
             )
-            console.log(groups)
-
             return groups
         },
     },
@@ -61,7 +55,6 @@ export default {
                 }
 
             } catch(error) {
-                console.log(error)
                 return {
                     ok: false,
                     errors: formatErrors(error, models )

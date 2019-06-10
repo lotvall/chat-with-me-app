@@ -17,7 +17,7 @@ services:
     ports:
       - "3030:5432"
   web:
-    image: chat-with-me-server
+    image: lotvall/chat-with-me-server:latest
     networks:
       - webnet
     environment:
@@ -37,7 +37,7 @@ services:
       - ./mysite.template:/etc/nginx/conf.d/mysite.template
       - ./uploads:/uploads
     ports:
-    - "8080:80"
+    - "80:80"
     networks:
       - webnet
     depends_on:

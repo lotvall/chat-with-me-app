@@ -17,12 +17,9 @@ export default async () => {
 
   while (!connected && maxReconnects) {
     try {
-      // eslint-disable-next-line no-await-in-loop
       await sequelize.authenticate();
       connected = true;
     } catch (err) {
-      console.log('reconnecting in 5 seconds');
-      // eslint-disable-next-line no-await-in-loop
       await sleep(5000);
       maxReconnects -= 1;
     }

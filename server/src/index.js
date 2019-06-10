@@ -36,15 +36,12 @@ getModels().then((models) => {
     subscriptions: {
       onConnect: async (connectionParams, webSocket) => {
         const { token, refreshtoken } = connectionParams
-        console.log('are tokens in onConnect?', !!token, !!refreshtoken)
   
         if (token && refreshtoken) {
           try { 
             const { user } = jwt.verify(token, SECRET)
-            console.log('try,', user)
             return { models, user }
           } catch (err) {
-            console.log('catch block')
   
             const { user } = await refreshTokens(token, refreshtoken, models, SECRET, SECRET2);
             if (!user) {
@@ -59,12 +56,7 @@ getModels().then((models) => {
         
       } 
     },
-    context: async ({ req, connection }) => {
-      console.log('is req here beginning of context', 'what about now') //first no, then true
-  
-      connection ? 
-        console.log('is the user here connection', connection.context.user) : 
-        console.log('is the user here req', req.user)
+    context: async ({ req, connection }) => {  
   
         if (!connection && !req.user) {
           const { token, refreshtoken } = req.headers
@@ -72,17 +64,11 @@ getModels().then((models) => {
           if (token && refreshtoken) {
             try { 
               const { user } = await jwt.verify(token, SECRET)
-              console.log('is req here try', !!req) // true
-              console.log('TESTING', req.protocol + '://' + req.get('host'))
   
   
               return { models, user, SECRET, SECRET2, serverUrl:`${req.protocol}://${req.get('host')}`
             }
             } catch (err) {
-              
-              // refreshToken not defined, needs to be refreshtoken
-  
-              console.log('is req here catch', !!req)
             
               const { user } = await refreshTokens(token, refreshtoken, models, SECRET, SECRET2);
     
@@ -91,8 +77,6 @@ getModels().then((models) => {
           }
   
         }
-        // console.log('TESTING', req.protocol + '://' + req.get('host'))
-        // console.log('is req here last return', !!req)
   
       return {
         models,
@@ -111,16 +95,8 @@ getModels().then((models) => {
   server.installSubscriptionHandlers(httpServer);
   
   const PORT = 8080
-  // { force: true }
-  // models.sequelize.sync().then(function () {
-  //   httpServer.listen(PORT).then(({ url }) => {
-  //     console.log(`🚀  Server ready at ${url}`);
-  //   }); 
-  // });
   models.sequelize.sync().then(function () {
     httpServer.listen(PORT, () => {
-      console.log(server)
-      console.log(server.subscriptionServer)
       console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
       console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`)
       }); 

@@ -32,11 +32,8 @@ export default {
         getPendingGroupInvites: requiresAuth.createResolver(async (parent, args, { models, user }) => {
             const pendingMemberships = await models.Member.findAll({where: {userId: user.id, active: false } }).map(m => m.dataValues)
 
-            console.log('pending members', pendingMemberships) 
-
             const groupInvites = pendingMemberships.map(async m => {
                 const group = await models.Group.findOne({where: { id : m.groupId }})
-                console.log(group.dataValues)
 
                 const inviter = await models.User.findOne({where: { id: m.inviter }})
                 return {
@@ -44,12 +41,8 @@ export default {
                     inviter: inviter ? inviter.dataValues : null
                 }
             })
-            // 3 
-            console.log('groupInvites, returns 3 promises', groupInvites)
-
+            
             const retValue = await Promise.all(groupInvites)
-
-            console.log('retvalue', retValue)
 
             return retValue
         }),
@@ -60,7 +53,6 @@ export default {
             
             try {
                 const group = await models.Group.create({ ...input });
-                console.log(group)
                 await models.Member.create({ groupId: group.id, userId: user.id, admin: true, active: true, inviter: user.id });
 
                 if ( input.members && input.members.length > 0)  {
@@ -77,7 +69,6 @@ export default {
                     },
                 };
             } catch (err) {
-                console.log(err);
                 return {
                     ok: false,
                     errors: formatErrors(err, models),
@@ -91,7 +82,6 @@ export default {
             // need to 
 
             const group = await models.Group.findOne({where: {id: groupId}}, {raw: true})
-            console.log(group)
             if(!group) {
                 throw new Error('No such group exists')
             }
@@ -121,7 +111,7 @@ export default {
         }),
 
         inviteToGroup: requiresAuth.createResolver(async (parent, { input: { groupId, userIds } }, {models, user}) => {
-            console.log(groupId, userIds)
+
             // find the inviter member
             // is there an inviter member
             // is the inviter an admin?
@@ -168,8 +158,6 @@ export default {
                 }
 
                 const newMember = models.Member.create({ groupId, userId, admin: false, active: false, inviter: user.id })
-
-                console.log(newMember)
 
                 return {
                     ok: true,
