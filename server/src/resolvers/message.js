@@ -72,18 +72,15 @@ export default {
         createMessage: requiresAuth.createResolver(async (parent, { file , ...args }, { models, user }) => {
           try {
             const messageData = args
-            console.log(messageData)
 
             if (file) {
 
                 const { createReadStream, filename, mimetype, encoding } = await file
                 const id = shortid.generate()
                 const url = `${id}-${filename}`
-                console.log(url)
                 messageData.filetype = mimetype
                 messageData.url = url
                 const stream = createReadStream()
-                console.log(messageData)
                 storeFS(stream, url)   
             }
             const message = await models.Message.create({

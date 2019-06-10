@@ -13,7 +13,6 @@ import RenderTextFile from '../components/RenderTextFile'
 const Message = ({ url, text, filetype }) => {
 
     if (url) {
-        console.log(url)
         if (filetype.startsWith('image')) {
             return <div><img src={`${url}`} /></div>
         } else if (filetype === 'text/plain') {
@@ -68,7 +67,6 @@ const MessageContainer = ({ groupName, groupId }) => {
                         return null
                     }
                     if (error) console.log(error)
-                    if (data) console.log('data', data)
 
                     if (!unsubscribe) {
                         unsubscribe = subscribeToMore({
@@ -96,7 +94,6 @@ const MessageContainer = ({ groupName, groupId }) => {
 
                                         }
                                     }
-                                    console.log(newData)
                                     return newData
                                 }
                             },
@@ -106,13 +103,11 @@ const MessageContainer = ({ groupName, groupId }) => {
 
                     const messages = data.messages ? data.messages.messages : []
                     const cursor = data.messages ? data.messages.cursor : null
-                    console.log(cursor)
                     let scrolling = null
 
                     
 
                     const handleScroll = () => {
-                        console.log(cursor)
                         if (
                             scrolling &&
                             scrolling.scrollTop < 100 &&
@@ -128,9 +123,7 @@ const MessageContainer = ({ groupName, groupId }) => {
                                     cursor,
                                 },
                                 updateQuery: (previousResult, { fetchMoreResult }) => {
-                                    console.log(previousResult)
-                                    console.log(fetchMoreResult)
-                                    console.log(messages[messages.length - 1].created_at)
+
                                     if (!fetchMoreResult) {
                                         return previousResult;
                                     }
@@ -138,8 +131,6 @@ const MessageContainer = ({ groupName, groupId }) => {
                                     if (fetchMoreResult.messages.length < 35) {
                                         setHasMoreMessages( false);
                                     }
-
-                                    console.log(previousResult.messages)
                                     const newResult = {
                                         messages: {
                                             ...previousResult,
@@ -149,8 +140,6 @@ const MessageContainer = ({ groupName, groupId }) => {
                                         }
                                         
                                     }
-                                    console.log(newResult)
-
 
                                     return newResult
                                 },
