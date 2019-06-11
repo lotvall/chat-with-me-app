@@ -14,7 +14,7 @@ import { setContext } from 'apollo-link-context';
 
 
 const httpLink = createUploadLink({
-  uri: 'http://localhost:8080/graphql',
+  uri: `http://${process.env.REACT_APP_SERVER_URL}/graphql`,
 });
 
 const addTokenMiddleware = setContext(() => ({
@@ -28,7 +28,7 @@ const linkWithTokens = addTokenMiddleware.concat(httpLink)
 
 
 export const wsLink = new WebSocketLink({
-  uri: `ws://localhost:8080/graphql`,
+  uri: `ws://${process.env.REACT_APP_SERVER_URL}/graphql`,
   options: {
     reconnect: true,
     lazy: true,

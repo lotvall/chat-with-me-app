@@ -16,7 +16,9 @@ dotenv.config()
 const app = express();
 
 app.use('/uploads', express.static('uploads'))
+
 app.use(cors())
+
 
 
 const SECRET = process.env.SECRET1

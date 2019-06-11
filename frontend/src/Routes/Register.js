@@ -82,7 +82,7 @@ const Register = ({history}) => {
                 fluid
                 icon="user"
                 iconPosition="left"
-                placeholder="E-mail address"
+                placeholder="Username"
                 onChange={e => setUsername(e.target.value)}
                 value={username}
               />
@@ -101,7 +101,7 @@ const Register = ({history}) => {
             </Segment>
           </Form>
           <Message>
-            Already have an account?<a href="http://localhost:3000/login"> Login</a>
+            Already have an account?<a style={{cursor:'pointer'}} onClick={() => history.push('/login')}  > Login</a>
           </Message>
 
           {

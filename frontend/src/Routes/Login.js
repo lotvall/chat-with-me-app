@@ -82,7 +82,7 @@ const Login = ({history}) => {
                     fluid
                     icon="user"
                     iconPosition="left"
-                    placeholder="E-mail address"
+                    placeholder="Username"
                     onChange={e => setUsername(e.target.value)}
                     value={username}
                   />
@@ -101,7 +101,7 @@ const Login = ({history}) => {
                 </Segment>
               </Form>
               <Message>
-                New to Chat With Me? <a href="http://localhost:3000/register">Sign Up</a>
+                New to Chat With Me? <a style={{cursor:'pointer'}} onClick={() => history.push('/register')}>Sign Up</a>
               </Message>
 
               {

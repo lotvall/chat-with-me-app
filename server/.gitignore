@@ -3,3 +3,4 @@ process.env
 uploads/
 dist/
 pgdata/
+docker-compose.yml

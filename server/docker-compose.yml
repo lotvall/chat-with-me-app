@@ -23,6 +23,7 @@ services:
     environment:
       DB_HOST: db
       REDIS_HOST: redis
+      SERVER_URL: "http://ec2-13-58-193-226.us-east-2.compute.amazonaws.com"
       SECRET1: "my name is bajonkels and I do what I want"
       SECRET2: "Kafka was a boy in japan who had lost his mother and his sister"
     volumes:
