@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import backgroundPhoto from '../static/images/compressedBackground3.png'
+import backgroundPhoto from '../static/images/compressbackground2.jpg'
 
 import "semantic-ui-css/semantic.min.css";
 
