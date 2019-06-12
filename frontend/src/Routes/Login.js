@@ -3,7 +3,6 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import logo from '../static/images/logo.png'
 import { wsLink } from '../index'
-
 import {
   Button,
   Form,
@@ -14,6 +13,8 @@ import {
 } from "semantic-ui-react";
 
 import "./Login.css";
+
+
 
 const LOGIN_MUTATION = gql`
     mutation($username: String!, $password:String!){
@@ -40,10 +41,14 @@ const Login = ({history}) => {
 
     const { ok, token, refreshToken, errors } = response.data.login
 
+    console.log(wsLink)
+
     if (ok) {
       localStorage.setItem('token', token)
       localStorage.setItem('refreshToken', refreshToken)
+
       wsLink.subscriptionClient.tryReconnect()
+
       history.push('/app')
 
     } else {
@@ -101,7 +106,8 @@ const Login = ({history}) => {
                 </Segment>
               </Form>
               <Message>
-                New to Chat With Me? <a style={{cursor:'pointer'}} onClick={() => history.push('/register')}>Sign Up</a>
+                New to Chat With Me? <button  style={{color: '#2185d0', cursor:'pointer', backgroundColor: 'transparent',
+  border: '1px solid transparent', '&:hover':{ textDecoration: 'underline'}, '&:focus':{ textDecoration: 'underline'}}} onClick={() => history.push('/register')}>Sign Up</button>
               </Message>
 
               {

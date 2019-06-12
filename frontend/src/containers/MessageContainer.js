@@ -50,10 +50,7 @@ const message = ({ id, text, user, created_at, url, filetype }) => (
 const MessageContainer = ({ groupName, groupId }) => {
 
     const [hasMoreMessages, setHasMoreMessages] = useState(true)
-
     
-    
-
     let unsubscribe = null;
     return (
         <Query

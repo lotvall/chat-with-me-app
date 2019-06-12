@@ -101,7 +101,8 @@ const Register = ({history}) => {
             </Segment>
           </Form>
           <Message>
-            Already have an account?<a style={{cursor:'pointer'}} onClick={() => history.push('/login')}  > Login</a>
+            Already have an account? <button  style={{color: '#2185d0', cursor:'pointer', backgroundColor: 'transparent',
+  border: '1px solid transparent', '&:hover':{ textDecoration: 'underline'}, '&:focus':{ textDecoration: 'underline'}}} onClick={() => history.push('/login')}>Login</button>
           </Message>
 
           {
