@@ -33,7 +33,7 @@ const message = ({ id, text, user, created_at, url, filetype }) => (
             <Comment.Author as='a'>{user.username}</Comment.Author>
             <Comment.Metadata>
                 <div>
-                    {moment(created_at, "ddd MMM D YYYY HH:mm:ss").fromNow()}
+                    {moment(created_at, "ddd MMM D YYYY HH:mm:ss Z").fromNow()}
                 </div>
             </Comment.Metadata>
 
@@ -104,8 +104,6 @@ const MessageContainer = ({ groupName, groupId }) => {
                     const messages = data.messages ? data.messages.messages : []
                     const cursor = data.messages ? data.messages.cursor : null
                     let scrolling = null
-
-                    
 
                     const handleScroll = () => {
                         if (
